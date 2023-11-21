@@ -17,29 +17,45 @@ class LikedPosts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FetchPixels(context);
-    AuthProvider authProvider = Provider.of(context,listen: false);
+    AuthProviderApp authProvider = Provider.of(context, listen: false);
     return Scaffold(
-      appBar: AppBar(elevation: 0.0,backgroundColor: Colors.white,automaticallyImplyLeading: false,title: Text('Liked Posts',style: TextStyle(fontFamily: 'Lato',color: Colors.black),),),
-        body: SizedBox(
-          height: FetchPixels.height,
-          width: FetchPixels.width,
-          child: StreamBuilder(
-              stream: firebaseFirestore.collection('News').snapshots(),
-              builder: (context,snapshot){
-                if(snapshot.hasData){
-                  List<NewsModel> news = snapshot.data!.docs.map((e) => NewsModel.fromJson(e.data() as Map<String,dynamic>)).toList();
-                  List<NewsModel> likedNews = news.where((element) => element.totalLikes!.contains(firebaseAuth.currentUser!.uid)).toList();
-                  return ListView.builder(
-                    itemCount: likedNews.length,
-                    itemBuilder: (context, index) {
-                      // return FeedView(news: likedNews[index],index: index,);
-                    },
-                  );
-                }else{
-                  return Center(child: SingleChildScrollView(),);
-                }
-              }),
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Liked Posts',
+          style: TextStyle(fontFamily: 'Lato', color: Colors.black),
         ),
+      ),
+      body: SizedBox(
+        height: FetchPixels.height,
+        width: FetchPixels.width,
+        child: StreamBuilder(
+            stream: firebaseFirestore.collection('News').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<NewsModel> news = snapshot.data!.docs
+                    .map((e) =>
+                        NewsModel.fromJson(e.data() as Map<String, dynamic>))
+                    .toList();
+                List<NewsModel> likedNews = news
+                    .where((element) => element.totalLikes!
+                        .contains(firebaseAuth.currentUser!.uid))
+                    .toList();
+                return ListView.builder(
+                  itemCount: likedNews.length,
+                  itemBuilder: (context, index) {
+                    // return FeedView(news: likedNews[index],index: index,);
+                  },
+                );
+              } else {
+                return Center(
+                  child: SingleChildScrollView(),
+                );
+              }
+            }),
+      ),
     );
   }
 }

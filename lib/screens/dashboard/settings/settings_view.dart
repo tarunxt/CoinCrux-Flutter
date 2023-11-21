@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:coincrux/base/resizer/fetch_pixels.dart';
 import 'package:coincrux/repository/signin_firebase.dart';
+import 'package:coincrux/routes/app_pages.dart';
+import 'package:coincrux/screens/auth/provider/auth_provider.dart';
 import 'package:coincrux/screens/dashboard/news_feed/news_feed_view.dart';
 import 'package:coincrux/screens/dashboard/settings/pages/about_us.dart';
 import 'package:coincrux/screens/dashboard/settings/pages/book_marks_view.dart';
@@ -12,6 +14,7 @@ import 'package:coincrux/screens/dashboard/settings/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../../../base/widget_utils.dart';
@@ -100,6 +103,19 @@ class _SettingsViewState extends State<SettingsView> {
                 .mediumLato()
                 .copyWith(fontSize: FetchPixels.getPixelHeight(17)),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                GoogleSignIn().signOut();
+                firebaseAuth.signOut();
+                Get.offAllNamed(Routes.loginView);
+              },
+              icon: Icon(
+                Icons.logout,
+                color: R.colors.blackColor,
+              ),
+            )
+          ],
         ),
         body: Container(
           padding: EdgeInsets.all(15),

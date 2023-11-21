@@ -31,12 +31,12 @@ dependencies:
   cached_network_image: ^3.2.3
   candlesticks: ^2.1.0
   carousel_slider: ^4.2.1
-  cloud_firestore: ^4.8.2
+  cloud_firestore: ^4.13.1
   cupertino_icons: ^1.0.2
   curved_navigation_bar: ^1.0.3
   firebase_auth: ^4.6.3
-  firebase_core: ^2.14.0
-  firebase_storage: ^11.2.4
+  firebase_core: ^2.20.0
+  firebase_storage: ^11.5.1
   flutter:
     sdk: flutter
   flutter_card_swiper: ^5.1.0

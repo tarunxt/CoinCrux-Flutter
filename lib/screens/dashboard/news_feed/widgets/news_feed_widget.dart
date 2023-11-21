@@ -39,7 +39,7 @@ class _NewsFeedWidgetState extends State<NewsFeedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of(context, listen: false);
+    AuthProviderApp authProvider = Provider.of(context, listen: false);
     return Scaffold(
       backgroundColor: R.colors.bgColor,
       body: Column(children: [
@@ -91,7 +91,7 @@ class _NewsFeedWidgetState extends State<NewsFeedWidget> {
                       ),
                       getHorSpace(FetchPixels.getPixelWidth(1)),
                       getHorSpace(FetchPixels.getPixelWidth(1)),
-                      Consumer<AuthProvider>(
+                      Consumer<AuthProviderApp>(
                         builder: (context, authProvider, child) {
                           return InkWell(
                             onTap: () {
@@ -458,7 +458,7 @@ class _MyNewsFeedWidgetState extends State<MyNewsFeedWidget> {
                         ),
                         getHorSpace(FetchPixels.getPixelWidth(1)),
                         getHorSpace(FetchPixels.getPixelWidth(1)),
-                        Consumer<AuthProvider>(
+                        Consumer<AuthProviderApp>(
                           builder: (context, authProvider, child) {
                             return InkWell(
                               onTap: () {

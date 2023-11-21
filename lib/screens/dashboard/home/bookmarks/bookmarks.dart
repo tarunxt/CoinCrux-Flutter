@@ -30,8 +30,8 @@ class _BookmarkState extends State<Bookmark> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<NewsProvider,AuthProvider>(
-      builder: (context, newsProvider, authProvider,child) {
+    return Consumer2<NewsProvider, AuthProviderApp>(
+      builder: (context, newsProvider, authProvider, child) {
         return Scaffold(
           backgroundColor: R.colors.bgColor,
           appBar: AppBar(
@@ -96,19 +96,21 @@ class _BookmarkState extends State<Bookmark> {
           body: Column(children: [
             // getDivider(R.colors.fill.withOpacity(0.2),
             //     FetchPixels.getPixelHeight(10), FetchPixels.getPixelHeight(2)),
-            SizedBox(height: FetchPixels.getPixelHeight(15),),
+            SizedBox(
+              height: FetchPixels.getPixelHeight(15),
+            ),
             getPaddingWidget(
               EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
               TextFormField(
-                decoration:
-                    R.decorations.textFormFieldDecoration(null, "Search").copyWith(
+                decoration: R.decorations
+                    .textFormFieldDecoration(null, "Search")
+                    .copyWith(
                         prefixIcon: Icon(
-                          Icons.search,
-                          color: R.colors.fill,
-                          size: FetchPixels.getPixelWidth(22),
-                        )
-                    ),
-                onChanged: (value){
+                      Icons.search,
+                      color: R.colors.fill,
+                      size: FetchPixels.getPixelWidth(22),
+                    )),
+                onChanged: (value) {
                   setState(() {
                     query = value;
                   });
@@ -117,49 +119,71 @@ class _BookmarkState extends State<Bookmark> {
             ),
             getVerSpace(FetchPixels.getPixelHeight(10)),
             Expanded(
-                child: firebaseAuth.currentUser == null ? SizedBox() : StreamBuilder(
-                    stream: firebaseFirestore
-                        .collection('News')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<NewsModel> news = snapshot.data!.docs
-                            .map((e) => NewsModel.fromJson(
-                                e.data() as Map<String, dynamic>))
-                            .toList();
+                child: firebaseAuth.currentUser == null
+                    ? SizedBox()
+                    : StreamBuilder(
+                        stream: firebaseFirestore
+                            .collection('users')
+                            .doc(firebaseAuth.currentUser!.uid)
+                            .collection("bookmarks")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<String> docId = snapshot.data!.docs
+                                .map((e) => e.reference.id)
+                                .toList();
+                            List<NewsModel> news = snapshot.data!.docs
+                                .map((e) => NewsModel.fromJson(
+                                    e.data() as Map<String, dynamic>))
+                                .toList();
 
-                        List<NewsModel> bookMarkedNews = [];
+                            List<NewsModel> bookMarkedNews = news;
 
-                        if(authProvider.userM.bookMarks != null){
-                          bookMarkedNews = news.where((element) => authProvider.userM.bookMarks!.contains(element.newsId)).toList();
-                        }
+                            bookMarkedNews.forEach((element) {
+                              element.newsId = docId[news.indexOf(element)];
+                            });
 
-                        List<NewsModel> filteredNews = bookMarkedNews.where((element) {
-                         String coinName = element.assetName!.toLowerCase();
-                         return coinName.contains(query.toLowerCase());
-                        }).toList();
+                            print(
+                                "bookMarkedNews: ${bookMarkedNews[0].newsId}");
 
-                        return  ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
-                          itemCount: filteredNews.length,
-                          itemBuilder: (context, index) {
-                            return isTile? LatestNewsWidget(
-                                news: filteredNews[index],
-                                index: index,
-                            ) : LatestViewAll(
-                              isNotification: false,
-                              news: filteredNews[index],
-                              index: index
+                            // if (authProvider.userM.bookMarks != null) {
+                            //   bookMarkedNews = news
+                            //       .where((element) => authProvider
+                            //           .userM.bookMarks!
+                            //           .contains(element.newsId))
+                            //       .toList();
+                            // }
+
+                            List<NewsModel> filteredNews =
+                                bookMarkedNews.where((element) {
+                              String coinName =
+                                  element.assetName!.toLowerCase();
+                              return coinName.contains(query.toLowerCase());
+                            }).toList();
+
+                            return ListView.builder(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: FetchPixels.getPixelWidth(20)),
+                              itemCount: filteredNews.length,
+                              itemBuilder: (context, index) {
+                                filteredNews[index].newsId = docId[index];
+                                return isTile
+                                    ? LatestNewsWidget(
+                                        news: filteredNews[index],
+                                        index: index,
+                                      )
+                                    : LatestViewAll(
+                                        isNotification: true,
+                                        news: filteredNews[index],
+                                        index: index);
+                              },
                             );
-                          },
-                        );
-                      } else {
-                        return Center(
-                          child: SingleChildScrollView(),
-                        );
-                      }
-                    })
-                ),
+                          } else {
+                            return Center(
+                              child: SingleChildScrollView(),
+                            );
+                          }
+                        })),
           ]),
         );
       },

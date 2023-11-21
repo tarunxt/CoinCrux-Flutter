@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coincrux/base/resizer/fetch_pixels.dart';
 import 'package:coincrux/base/widget_utils.dart';
+import 'package:coincrux/screens/dashboard/home/bookmarks/bookmarks.dart';
 import 'package:coincrux/screens/dashboard/home/model/category_model.dart';
 import 'package:coincrux/screens/dashboard/home/view_all_pages/categories_view_all.dart';
 import 'package:coincrux/screens/dashboard/home/view_all_pages/latest_news/latest_news_view.dart';
@@ -12,6 +13,7 @@ import 'package:coincrux/screens/dashboard/home/widgets/topics_widget.dart';
 import 'package:coincrux/screens/dashboard/news_feed/model/news_model.dart';
 import 'package:coincrux/screens/dashboard/news_feed/provider/news_provider.dart';
 import 'package:coincrux/screens/dashboard/searchScreen.dart';
+import 'package:coincrux/screens/dashboard/settings/pages/book_marks_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -75,12 +77,19 @@ class _HomeViewState extends State<HomeView> {
                 .mediumLato()
                 .copyWith(fontSize: FetchPixels.getPixelHeight(17)),
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.to(Bookmark());
+                },
+                icon: Icon(Icons.bookmark))
+          ],
         ),
         body: Container(
             padding: EdgeInsets.all(15),
             child: RefreshIndicator(
                 onRefresh: _refreshData,
-                child: Consumer2<AuthProvider, NewsProvider>(
+                child: Consumer2<AuthProviderApp, NewsProvider>(
                   builder: (context, auth, newsProvider, child) {
                     if (isLoading) {
                       return Center(
@@ -123,91 +132,6 @@ class _HomeViewState extends State<HomeView> {
                                     child: getAssetImage(R.images.searchIcon))),
                       ),
                       getVerSpace(FetchPixels.getPixelHeight(20)),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text(
-                      //       "Markets",
-                      //       style: R.textStyle.mediumLato().copyWith(
-                      //           fontSize: FetchPixels.getPixelHeight(15),
-                      //           color: R.colors.headings),
-                      //     ),
-                      //     getHorSpace(FetchPixels.getPixelWidth(1)),
-                      //     InkWell(
-                      //       onTap: () {
-                      //         Get.to(CategoriesViewAll(
-                      //             title: 'Price Analysis', isMarket: true));
-                      //       },
-                      //       child: Text(
-                      //         "See All",
-                      //         style: R.textStyle.regularLato().copyWith(
-                      //             //
-                      //             fontSize: FetchPixels.getPixelHeight(12),
-                      //             color: R.colors.blackColor.withOpacity(0.5)),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // getVerSpace(FetchPixels.getPixelHeight(10)),
-                      // SizedBox(
-                      //     height: FetchPixels.getPixelHeight(160),
-                      //     child: CarouselSlider.builder(
-                      //       itemCount: topNews.length,
-                      //       itemBuilder: (context, index, realIndex) {
-                      //         final double elevation = realIndex == currentImage
-                      //             ? 5.0
-                      //             : 0.0; // Adjust elevation based on currentImage
-
-                      //         return Transform.scale(
-                      //           scale: 1.0 +
-                      //               (0.03 *
-                      //                   (1 -
-                      //                       (elevation /
-                      //                           5.0))), // Adjust scale for elevation effect
-                      //           child: Material(
-                      //             elevation: elevation, // Apply elevation
-                      //             child: Container(
-                      //               width: FetchPixels.getPixelWidth(300),
-                      //               margin: EdgeInsets.symmetric(
-                      //                 horizontal: FetchPixels.getPixelWidth(10),
-                      //               ),
-                      //               child: PriceAnalysis(
-                      //                 newsModel: topNews[index],
-                      //                 index: index,
-                      //                 currentImage: currentImage,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         );
-                      //       },
-                      //       options: CarouselOptions(
-                      //         viewportFraction: 0.9,
-                      //         onPageChanged: (index, reason) {
-                      //           setState(() {
-                      //             currentImage = index;
-                      //           });
-                      //         },
-                      //       ),
-                      //     )),
-                      // getVerSpace(FetchPixels.getPixelHeight(5)),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: List.generate(topNews.length, (index) {
-                      //     return Container(
-                      //       margin: EdgeInsets.symmetric(
-                      //           horizontal: FetchPixels.getPixelWidth(1)),
-                      //       height: FetchPixels.getPixelHeight(8),
-                      //       width: FetchPixels.getPixelWidth(
-                      //           currentImage == index ? 20 : 8),
-                      //       decoration: BoxDecoration(
-                      //           color: currentImage == index
-                      //               ? R.colors.darkBlue
-                      //               : R.colors.dividerColor,
-                      //           borderRadius: BorderRadius.circular(50)),
-                      //     );
-                      //   }),
-                      // ),
-                      // getVerSpace(FetchPixels.getPixelHeight(10)),
                       Text(
                         "Categories",
                         style: R.textStyle.mediumLato().copyWith(
@@ -319,45 +243,6 @@ class _HomeViewState extends State<HomeView> {
                               );
                             },
                           )),
-                      // getVerSpace(FetchPixels.getPixelHeight(10)),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text(
-                      //       "Topics",
-                      //       style: R.textStyle.mediumLato().copyWith(
-                      //           fontSize: FetchPixels.getPixelHeight(15),
-                      //           color: R.colors.headings),
-                      //     ),
-                      //     getHorSpace(FetchPixels.getPixelWidth(1)),
-                      //     InkWell(
-                      //       onTap: () {
-                      //         Get.to(
-                      //             CategoriesViewAll(title: 'Topics', isMarket: false));
-                      //       },
-                      //       child: Text(
-                      //         "See all",
-                      //         style: R.textStyle.regularLato().copyWith(
-                      //             fontSize: FetchPixels.getPixelHeight(12),
-                      //             color: R.colors.headings.withOpacity(0.5)),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // getVerSpace(FetchPixels.getPixelHeight(10)),
-                      // SizedBox(
-                      //   height: FetchPixels.getPixelHeight(120),
-                      //   child: ListView.builder(
-                      //     itemCount: topics.length,
-                      //     scrollDirection: Axis.horizontal,
-                      //     itemBuilder: (context, index) {
-                      //       return TopicsWidget(
-                      //           index: index,
-                      //           coinsName: topics[index],
-                      //           coinsImage: topicImage[index]);
-                      //     },
-                      //   ),
-                      // ),
                       getVerSpace(FetchPixels.getPixelHeight(10)),
                     ]);
                   },

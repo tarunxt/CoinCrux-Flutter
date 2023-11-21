@@ -50,13 +50,11 @@ class _SearchScreenState extends State<SearchScreen> {
               Icons.arrow_back_ios_new,
               color: R.colors.blackColor,
             )),
-
         title: Text(
           "Search",
           style: R.textStyle
               .mediumLato()
               .copyWith(fontSize: 18, color: R.colors.blackColor),
-
         ),
       ),
       body: SingleChildScrollView(
@@ -92,13 +90,17 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(
               height: FetchPixels.height / 1.4,
               width: FetchPixels.width,
-              child: StreamBuilder(
-                  stream: firebaseFirestore.collection('News').where('createdAt', isGreaterThan: Timestamp.fromDate(DateTime.now().subtract(Duration(days: 2)))).snapshots(),
+              child: FutureBuilder(
+                  future: firebaseFirestore
+                      .collection('News')
+                      .where('createdAt',
+                          isGreaterThan: Timestamp.fromDate(
+                              DateTime.now().subtract(Duration(days: 2))))
+                      .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<NewsModel> news = snapshot.data!.docs
-                          .map((e) => NewsModel.fromJson(
-                              e.data()))
+                          .map((e) => NewsModel.fromJson(e.data()))
                           .toList();
 
                       List<NewsModel> searchedNews = news.where((element) {
@@ -120,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     } else {
                       return Center(
                         child: SingleChildScrollView(
-                          child: Center(child:Text("No Results Found")),
+                          child: Center(child: Text("No Results Found")),
                         ),
                       );
                     }

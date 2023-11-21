@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:candlesticks/candlesticks.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coincrux/model/crypto_model.dart';
+import 'package:coincrux/screens/dashboard/news_feed/model/news_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../../dashboard/home/model/category_model.dart';
 import '../userModel.dart';
 import 'package:http/http.dart' as http;
 
-class AuthProvider extends ChangeNotifier {
+class AuthProviderApp extends ChangeNotifier {
   update() {
     notifyListeners();
   }
@@ -181,6 +182,35 @@ class AuthProvider extends ChangeNotifier {
         .asBroadcastStream();
     var d = userDoc.map((event) => UserModel.fromJson(event.data()!));
     return d;
+  }
+
+  static void updateBookmarks(String documentId, NewsModel newsList) {
+    var ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'bookMarks': FieldValue.arrayUnion([documentId])
+    });
+
+    var uploadRef = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("bookmarks")
+        .doc(documentId)
+        .set({
+      "coinImage": newsList.coinImage,
+      "coinDescription": newsList.coinDescription,
+      "coinHeading": newsList.coinHeading,
+      "assetName": newsList.assetName,
+      "newsId": newsList.newsId,
+      "totalLikes": newsList.totalLikes,
+      "totalDislikes": newsList.totalDislikes,
+      "createdAt": newsList.createdAt,
+      "category": newsList.category,
+      "createdBy": newsList.createdBy,
+      "topicTitle": newsList.topicTitle,
+      "marketCards": newsList.marketsCard,
+    });
   }
 
   List<CategoryModel> categoriesList = [

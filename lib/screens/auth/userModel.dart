@@ -9,7 +9,16 @@ class UserModel {
   List<dynamic>? totalRead;
   List<dynamic>? bookMarks = [];
 
-  UserModel({this.id, this.name, this.email, this.phone, this.isSocial,this.topics,this.totalRead,this.bookMarks,this.image});
+  UserModel(
+      {this.id,
+      this.name,
+      this.email,
+      this.phone,
+      this.isSocial,
+      this.topics,
+      this.totalRead,
+      this.bookMarks,
+      this.image});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -17,7 +26,9 @@ class UserModel {
     email = json['email'];
     phone = json['phone'];
     isSocial = json['isSocial'];
-    topics = (json['topics'] as List<dynamic>).map((topicJson) => Topics.fromJson(topicJson)).toList();
+    topics = (json['topics'] as List<dynamic>)
+        .map((topicJson) => Topics.fromJson(topicJson))
+        .toList();
     totalRead = json['totalRead'];
     bookMarks = json['bookMarks'];
     image = json['image'];
@@ -45,7 +56,7 @@ class Topics {
   Topics({this.newsType, this.name});
 
   @override
-  bool operator == (Object other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is Topics && other.name == name && other.newsType == newsType;

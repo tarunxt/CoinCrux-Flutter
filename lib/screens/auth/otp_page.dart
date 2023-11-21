@@ -31,7 +31,7 @@ class _OTPViewState extends State<OTPView> {
   TextEditingController phoneCtr = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthProviderApp>(
       builder: (context, auth, child) {
         return Scaffold(
           backgroundColor: R.colors.bgColor,

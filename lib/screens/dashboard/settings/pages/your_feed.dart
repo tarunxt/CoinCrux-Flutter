@@ -18,7 +18,6 @@ class YourFeed extends StatefulWidget {
 }
 
 class _YourFeedState extends State<YourFeed> {
-
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -45,18 +44,28 @@ class _YourFeedState extends State<YourFeed> {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of(context,listen: false);
+    AuthProviderApp authProvider = Provider.of(context, listen: false);
     return Scaffold(
       bottomSheet: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
         child: MyButton(
-            onTap: ()async{
+            onTap: () async {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: R.colors.theme,
+                    ));
+                  });
 
-              showDialog(context: context, builder: (context){
-                return Center(child: CircularProgressIndicator(color: R.colors.theme,));
+              await firebaseFirestore
+                  .collection("users")
+                  .doc(firebaseAuth.currentUser!.uid)
+                  .update({
+                "topics":
+                    authProvider.userM.topics!.map((e) => e.toJson()).toList()
               });
-
-              await firebaseFirestore.collection("users").doc(firebaseAuth.currentUser!.uid).update({"topics": authProvider.userM.topics!.map((e) => e.toJson()).toList()});
               Get.back();
               Get.back();
             },
@@ -79,17 +88,28 @@ class _YourFeedState extends State<YourFeed> {
       ),
       body: getPaddingWidget(
         EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
-        
-         Column(children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-            Text("All News",style: R.textStyle.regularLato().copyWith(fontSize: FetchPixels.getPixelHeight(13),),),
+        Column(children: [
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            Text(
+              "All News",
+              style: R.textStyle.regularLato().copyWith(
+                    fontSize: FetchPixels.getPixelHeight(13),
+                  ),
+            ),
             getHorSpace(FetchPixels.getPixelWidth(10)),
-            Text("Major News",style: R.textStyle.regularLato().copyWith(fontSize: FetchPixels.getPixelHeight(13),),),
-                getHorSpace(FetchPixels.getPixelWidth(10)),
-            Text("No News",style: R.textStyle.regularLato().copyWith(fontSize: FetchPixels.getPixelHeight(13),),),
-
+            Text(
+              "Major News",
+              style: R.textStyle.regularLato().copyWith(
+                    fontSize: FetchPixels.getPixelHeight(13),
+                  ),
+            ),
+            getHorSpace(FetchPixels.getPixelWidth(10)),
+            Text(
+              "No News",
+              style: R.textStyle.regularLato().copyWith(
+                    fontSize: FetchPixels.getPixelHeight(13),
+                  ),
+            ),
           ]),
           getDivider(R.colors.fill.withOpacity(0.5),
               FetchPixels.getPixelHeight(40), FetchPixels.getPixelHeight(1)),
@@ -97,22 +117,29 @@ class _YourFeedState extends State<YourFeed> {
             child: ListView.builder(
               itemCount: coinNames.length,
               itemBuilder: (context, index) {
-                return coinsWidget(index,authProvider);
+                return coinsWidget(index, authProvider);
               },
             ),
           ),
-           SizedBox(height: FetchPixels.getPixelHeight(80),)
+          SizedBox(
+            height: FetchPixels.getPixelHeight(80),
+          )
         ]),
       ),
     );
   }
 
-  Widget coinsWidget(index,AuthProvider auth) {
+  Widget coinsWidget(index, AuthProviderApp auth) {
     return Column(
       children: [
         Row(
           children: [
-            Text(coinNames[index],style: R.textStyle.regularLato().copyWith(fontSize: FetchPixels.getPixelHeight(17),),),
+            Text(
+              coinNames[index],
+              style: R.textStyle.regularLato().copyWith(
+                    fontSize: FetchPixels.getPixelHeight(17),
+                  ),
+            ),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -120,30 +147,51 @@ class _YourFeedState extends State<YourFeed> {
                   3,
                   (i) {
                     return InkWell(
-                      onTap: () async{
+                      onTap: () async {
+                        if (auth.userM.topics!
+                            .where((t) =>
+                                t.name == coinNames[index] && t.newsType == i)
+                            .toList()
+                            .isNotEmpty) {
+                          Topics topic =
+                              Topics(name: coinNames[index], newsType: i);
+                          auth.userM.topics!.remove(topic);
+                        } else {
+                          auth.userM.topics!.removeWhere((t) =>
+                              t.name == coinNames[index] && t.newsType != i);
+                          Topics topic =
+                              Topics(name: coinNames[index], newsType: i);
+                          auth.userM.topics!.add(topic);
+                        }
 
-                          if(auth.userM.topics!.where((t) => t.name==coinNames[index] && t.newsType==i).toList().isNotEmpty)  {
-                            Topics topic = Topics(name: coinNames[index],newsType: i);
-                            auth.userM.topics!.remove(topic);
-                          }else{
-                            auth.userM.topics!.removeWhere((t) => t.name == coinNames[index] && t.newsType != i);
-                            Topics topic = Topics(name: coinNames[index],newsType: i);
-                            auth.userM.topics!.add(topic);
-                          }
-
-                      setState(() {
-
-                      });
-                    },
+                        setState(() {});
+                      },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(18)),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: FetchPixels.getPixelWidth(18)),
                         height: FetchPixels.getPixelHeight(30),
                         width: FetchPixels.getPixelWidth(30),
                         decoration: BoxDecoration(
-                          border: Border.all(width: FetchPixels.getPixelWidth(1)),
+                            border:
+                                Border.all(width: FetchPixels.getPixelWidth(1)),
                             borderRadius: BorderRadius.circular(3),
-                            color: auth.userM.topics!.where((t) => t.name==coinNames[index] && t.newsType==i).toList().isNotEmpty ? R.colors.theme : R.colors.transparent),
-                        child: Icon(Icons.check,color: auth.userM.topics!.where((t) => t.name==coinNames[index] && t.newsType==i).toList().isNotEmpty ? Colors.white : R.colors.transparent),
+                            color: auth.userM.topics!
+                                    .where((t) =>
+                                        t.name == coinNames[index] &&
+                                        t.newsType == i)
+                                    .toList()
+                                    .isNotEmpty
+                                ? R.colors.theme
+                                : R.colors.transparent),
+                        child: Icon(Icons.check,
+                            color: auth.userM.topics!
+                                    .where((t) =>
+                                        t.name == coinNames[index] &&
+                                        t.newsType == i)
+                                    .toList()
+                                    .isNotEmpty
+                                ? Colors.white
+                                : R.colors.transparent),
                       ),
                     );
                   },

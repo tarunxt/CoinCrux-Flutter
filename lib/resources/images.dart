@@ -1,8 +1,9 @@
 class AppImages {
   String chat = "chat.png";
-  String like = "like.png";
-  String comment = "comment.png";
-  String dislike = "dislike.png";
+  String like = "liked.png";
+  String comment = "commentd.png";
+  String dislike = "disliked.png";
+  String bookmark = "bookmark.png";
   String logo = "logo.png";
   String home = "home.png";
   String news = "news.png";

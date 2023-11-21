@@ -23,7 +23,7 @@ class CategoriesViewAll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(builder: (context, auth, child) {
+    return Consumer<AuthProviderApp>(builder: (context, auth, child) {
       List<NewsModel> newsList = Provider.of<NewsProvider>(context).newsList;
       return Scaffold(
           backgroundColor: R.colors.bgColor,

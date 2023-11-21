@@ -23,21 +23,22 @@ class PerWidget extends StatefulWidget {
 }
 
 class _PerWidgetState extends State<PerWidget> {
-
   // int currentSelected=0;
   @override
   Widget build(BuildContext context) {
-    AuthProvider auth = Provider.of(context,listen: false);
+    AuthProviderApp auth = Provider.of(context, listen: false);
     return InkWell(
-      onTap: widget.isAsset ? null : () {
-        Topics topics = Topics(newsType: 0,name: widget.model.coinName);
-        if (auth.selectedItems.contains(topics)) {
-          auth.selectedItems.remove(topics);
-        } else {
-          auth.selectedItems.add(topics);
-        }
-        setState(() {});
-      },
+      onTap: widget.isAsset
+          ? null
+          : () {
+              Topics topics = Topics(newsType: 0, name: widget.model.coinName);
+              if (auth.selectedItems.contains(topics)) {
+                auth.selectedItems.remove(topics);
+              } else {
+                auth.selectedItems.add(topics);
+              }
+              setState(() {});
+            },
       child: Container(
         padding: EdgeInsets.all(FetchPixels.getPixelHeight(5)),
         height: FetchPixels.getPixelHeight(100),
@@ -48,29 +49,38 @@ class _PerWidgetState extends State<PerWidget> {
         ),
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-         widget.isAsset?SizedBox(): Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              height: FetchPixels.getPixelHeight(20),
-              width: FetchPixels.getPixelWidth(20),
-              decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(FetchPixels.getPixelHeight(5)),
-                  color:auth.selectedItems.contains(Topics(name: widget.model.coinName!,newsType: 0))?  R.colors.theme:R.colors.transparent,
-                  border: Border.all(color: R.colors.borderColor, width: 1)),
-              child: Center(
-                  child: Icon(
-                Icons.check,
-                size: FetchPixels.getPixelHeight(15),
-                color:auth.selectedItems.contains(Topics(name: widget.model.coinName!,newsType: 0))? R.colors.whiteColor:R.colors.transparent,
-              )),
-            ),
+          widget.isAsset
+              ? SizedBox()
+              : Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    height: FetchPixels.getPixelHeight(20),
+                    width: FetchPixels.getPixelWidth(20),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            FetchPixels.getPixelHeight(5)),
+                        color: auth.selectedItems.contains(Topics(
+                                name: widget.model.coinName!, newsType: 0))
+                            ? R.colors.theme
+                            : R.colors.transparent,
+                        border:
+                            Border.all(color: R.colors.borderColor, width: 1)),
+                    child: Center(
+                        child: Icon(
+                      Icons.check,
+                      size: FetchPixels.getPixelHeight(15),
+                      color: auth.selectedItems.contains(
+                              Topics(name: widget.model.coinName!, newsType: 0))
+                          ? R.colors.whiteColor
+                          : R.colors.transparent,
+                    )),
+                  ),
+                ),
+          getAssetImage(
+            widget.model.coinLogo!,
+            height: FetchPixels.getPixelHeight(35),
+            width: FetchPixels.getPixelWidth(35),
           ),
-              getAssetImage(
-                widget.model.coinLogo!,
-                height: FetchPixels.getPixelHeight(35),
-                width: FetchPixels.getPixelWidth(35),
-              ),
           Text(
             widget.model.coinName!,
             style: R.textStyle.regularLato().copyWith(

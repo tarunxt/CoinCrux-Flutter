@@ -1,4 +1,5 @@
 import 'package:coincrux/screens/auth/provider/auth_provider.dart';
+import 'package:coincrux/screens/dashboard/news_feed/news_feed_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -23,7 +24,7 @@ class LatestNewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of(context, listen: false);
+    AuthProviderApp authProvider = Provider.of(context, listen: false);
     return InkWell(
       onTap: () {
         // Get.to(NewsDetailPage(
@@ -127,10 +128,12 @@ class LatestNewsWidget extends StatelessWidget {
                             Icon(
                               firebaseAuth.currentUser == null
                                   ? Icons.bookmark_outline_outlined
-                                  : authProvider.userM.bookMarks!
-                                          .contains(news.newsId)
-                                      ? Icons.bookmark
-                                      : Icons.bookmark_outline_outlined,
+                                  // : authProvider.userM.bookMarks!.contains(
+                                  //         news.newsId != null
+                                  //             ? news.newsId
+                                  //             : "")
+                                  //     ? Icons.bookmark
+                                  : Icons.bookmark_outline_outlined,
                               color: firebaseAuth.currentUser == null
                                   ? R.colors.blackColor.withOpacity(0.5)
                                   : authProvider.userM.bookMarks == null
@@ -141,33 +144,15 @@ class LatestNewsWidget extends StatelessWidget {
                                           : R.colors.blackColor
                                               .withOpacity(0.5),
                             ),
-                            InkWell(
-                              borderRadius: BorderRadius.circular(
-                                  FetchPixels.getPixelHeight(50)),
-                              onTap: () {
-                                Share.share(
-                                    'check out my Application https://example.com',
-                                    subject: 'Look what I made!');
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(
-                                    FetchPixels.getPixelHeight(6)),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: R.colors.whiteColor),
-                                child: Center(
-                                    child: getAssetImage(R.images.shareIcon,
-                                        scale: 2.5)),
-                              ),
-                            ),
                           ],
                         ),
-                        getHorSpace(FetchPixels.getPixelWidth(1)),
+                        getHorSpace(FetchPixels.getPixelWidth(10)),
                       ],
                     )
                   ],
                 ),
-              )
+              ),
+              getVerSpace(FetchPixels.getPixelHeight(10))
             ],
           ),
         ),
@@ -193,8 +178,8 @@ class MyLatestNewsWidget extends StatelessWidget {
         //   news: news,
         //   index: index,
         // ));
-        Get.to(CoinCategoryView(
-          coinName: news.assetName ?? "BTC",
+        Get.to(NewsFeedView(
+          index: index,
         ));
       },
       child: getPaddingWidget(

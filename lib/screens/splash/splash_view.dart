@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   void initState() {
-    AuthProvider auth = Provider.of(context, listen: false);
+    AuthProviderApp auth = Provider.of(context, listen: false);
     super.initState();
 // auth.getDataFromAPI("BTC");
     Timer(const Duration(seconds: 2), () {

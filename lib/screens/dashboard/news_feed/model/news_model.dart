@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class NewsModel {
   String? coinImage;
   String? coinDescription;
@@ -14,6 +13,7 @@ class NewsModel {
   String? createdBy;
   String? topicTitle;
   bool? marketsCard;
+  List<dynamic>? readBy = [];
 
   NewsModel(
       {this.coinImage,
@@ -27,7 +27,8 @@ class NewsModel {
       this.category,
       this.createdBy,
       this.topicTitle,
-      this.marketsCard});
+      this.marketsCard,
+      this.readBy});
 
   NewsModel.fromJson(Map<String, dynamic> json) {
     coinImage = json['coinImage'];
@@ -39,6 +40,7 @@ class NewsModel {
     totalDislikes = json['totalDislikes'];
     createdAt = json['createdAt'].toDate();
     category = json['category'];
+    readBy = json['readBy'];
   }
   factory NewsModel.fromMap(Map<String, dynamic> map) {
     return NewsModel(
@@ -57,6 +59,7 @@ class NewsModel {
       createdBy: map['createdBy'] ?? '',
       topicTitle: map['topicTitle'] ?? '',
       marketsCard: map['marketCards'] ?? false,
+      readBy: map['readBy'] ?? [],
     );
   }
 }

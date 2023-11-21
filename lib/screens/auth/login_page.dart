@@ -30,8 +30,8 @@ class _LoginViewState extends State<LoginView> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   final TextEditingController controller = TextEditingController();
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'NG');
+  String initialCountry = 'IN';
+  PhoneNumber number = PhoneNumber(isoCode: 'IN');
 
   TextEditingController emailCT = TextEditingController();
 
@@ -41,7 +41,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthProviderApp>(
       builder: (context, auth, child) {
         return Scaffold(
           backgroundColor: R.colors.bgColor,
@@ -147,28 +147,8 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       getVerSpace(FetchPixels.getPixelHeight(20)),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            height: FetchPixels.getPixelHeight(50),
-                            width: FetchPixels.getPixelWidth(110),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    FetchPixels.getPixelHeight(5)),
-                                border: Border.all(color: R.colors.theme)),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  getAssetImage(R.images.facebook,
-                                      scale: FetchPixels.getPixelHeight(26)),
-                                  Text(
-                                    "Facebook",
-                                    style:
-                                        TextStyle(color: R.colors.whiteColor),
-                                  )
-                                ]),
-                          ),
                           InkWell(
                             onTap: () async {
                               showDialog(
@@ -217,6 +197,29 @@ class _LoginViewState extends State<LoginView> {
                                     )
                                   ]),
                             ),
+                          ),
+                          SizedBox(
+                            width: FetchPixels.getPixelWidth(50),
+                          ),
+                          Container(
+                            height: FetchPixels.getPixelHeight(50),
+                            width: FetchPixels.getPixelWidth(110),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    FetchPixels.getPixelHeight(5)),
+                                border: Border.all(color: R.colors.theme)),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  getAssetImage(R.images.facebook,
+                                      scale: FetchPixels.getPixelHeight(26)),
+                                  Text(
+                                    "Facebook",
+                                    style:
+                                        TextStyle(color: R.colors.whiteColor),
+                                  )
+                                ]),
                           ),
                           Platform.isIOS
                               ? Container(

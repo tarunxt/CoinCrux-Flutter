@@ -22,19 +22,19 @@ class PersonaliseFeed extends StatefulWidget {
 }
 
 class _PersonaliseFeedState extends State<PersonaliseFeed> {
-
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthProviderApp>(
       builder: (context, auth, child) {
         return Scaffold(
           body: getPaddingWidget(
             EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              getVerSpace(FetchPixels.getPixelHeight(50)),
+              getVerSpace(FetchPixels.getPixelHeight(25)),
+              getVerSpace(FetchPixels.getPixelHeight(25)),
               Text(
                 "Personalise your Feed!",
                 style: R.textStyle
@@ -68,38 +68,79 @@ class _PersonaliseFeedState extends State<PersonaliseFeed> {
               ),
               getVerSpace(FetchPixels.getPixelHeight(10)),
               MyButton(
-                  onTap: (){
-                    showDialog(context: context, builder: (context){
-                      return Center(child: CircularProgressIndicator(color: R.colors.theme,));
-                    });
-                UserModel userModel = UserModel(id: firebaseAuth.currentUser!.uid,image: '',isSocial: true,phone: auth.phoneNumber,name: auth.name,topics: auth.selectedItems,email: auth.email,totalRead: [],bookMarks: []);
-                firebaseFirestore.collection("users").doc(firebaseAuth.currentUser!.uid).set(userModel.toJson()).then((value) {
-                    Navigator.pop(context);
-                    auth.dashCurrentPage = 0;
-                    auth.update();
-                    auth.isLogin = true;
-                    Get.offAll(LatestLandingScreen());
-
-                });
-              }, buttonText: "Get Started"),
-              getVerSpace(FetchPixels.getPixelHeight(10)),
-              Center(child: InkWell(
-
                   onTap: () {
-                    UserModel userModel = UserModel(id: firebaseAuth.currentUser!.uid,image: '',isSocial: true,phone: auth.phoneNumber,name: auth.name,topics: auth.selectedItems,email: auth.email,totalRead: [],bookMarks: []);
-                    firebaseFirestore.collection("users").doc(firebaseAuth.currentUser!.uid).set(userModel.toJson()).then((value) {
-                        auth.dashCurrentPage = 0;
-                        auth.update();
-                        auth.isLogin = true;
-                        Get.offAll(LatestLandingScreen());
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            color: R.colors.theme,
+                          ));
+                        });
+                    UserModel userModel = UserModel(
+                        id: firebaseAuth.currentUser!.uid,
+                        image: '',
+                        isSocial: true,
+                        phone: auth.phoneNumber,
+                        name: auth.name,
+                        topics: auth.selectedItems,
+                        email: auth.email,
+                        totalRead: [],
+                        bookMarks: []);
+                    firebaseFirestore
+                        .collection("users")
+                        .doc(firebaseAuth.currentUser!.uid)
+                        .set(userModel.toJson())
+                        .then((value) {
+                      Navigator.pop(context);
+                      auth.dashCurrentPage = 0;
+                      auth.update();
+                      auth.isLogin = true;
+                      Get.offAll(LatestLandingScreen());
                     });
                   },
-                  child: Text("Skip",style: R.textStyle.mediumLato().copyWith(color: R.colors.theme,fontSize: FetchPixels.getPixelHeight(16)),))),
-           Center(
-             child: Container(height: FetchPixels.getPixelHeight(2,),width: FetchPixels.getPixelWidth(40),
-             color: R.colors.theme,),
-           ),
-             getVerSpace(FetchPixels.getPixelHeight(20)),
+                  buttonText: "Get Started"),
+              getVerSpace(FetchPixels.getPixelHeight(10)),
+              Center(
+                  child: InkWell(
+                      onTap: () {
+                        UserModel userModel = UserModel(
+                            id: firebaseAuth.currentUser!.uid,
+                            image: '',
+                            isSocial: true,
+                            phone: auth.phoneNumber,
+                            name: auth.name,
+                            topics: auth.selectedItems,
+                            email: auth.email,
+                            totalRead: [],
+                            bookMarks: []);
+                        firebaseFirestore
+                            .collection("users")
+                            .doc(firebaseAuth.currentUser!.uid)
+                            .set(userModel.toJson())
+                            .then((value) {
+                          auth.dashCurrentPage = 0;
+                          auth.update();
+                          auth.isLogin = true;
+                          Get.offAll(LatestLandingScreen());
+                        });
+                      },
+                      child: Text(
+                        "Skip",
+                        style: R.textStyle.mediumLato().copyWith(
+                            color: R.colors.theme,
+                            fontSize: FetchPixels.getPixelHeight(16)),
+                      ))),
+              Center(
+                child: Container(
+                  height: FetchPixels.getPixelHeight(
+                    2,
+                  ),
+                  width: FetchPixels.getPixelWidth(40),
+                  color: R.colors.theme,
+                ),
+              ),
+              getVerSpace(FetchPixels.getPixelHeight(20)),
             ]),
           ),
         );

@@ -47,7 +47,7 @@ class _NameDialogState extends State<NameDialog>
   @override
   Widget build(BuildContext context) {
     FetchPixels(context);
-    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+    AuthProviderApp auth = Provider.of<AuthProviderApp>(context, listen: false);
     return ScaleTransition(
       alignment: Alignment.center,
       scale: scaleAnimation,
