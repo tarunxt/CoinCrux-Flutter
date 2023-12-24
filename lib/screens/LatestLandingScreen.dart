@@ -79,7 +79,8 @@ class _LatestLandingScreenState extends State<LatestLandingScreen> {
                     controller: cardSwiperController,
                     allowedSwipeDirection: AllowedSwipeDirection.only(
                         right: false, left: false, down: false, up: true),
-                    cardBuilder: (context, index) {
+                    cardBuilder: (BuildContext context, int index, int param1,
+                        int param2) {
                       return FeedView(news: newsList[index], index: index);
                     },
                     cardsCount: newsList.length,
