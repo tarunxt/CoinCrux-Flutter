@@ -198,7 +198,7 @@ class _LoginViewState extends State<LoginView> {
                                     getAssetImage(R.images.mails,
                                         scale: FetchPixels.getPixelHeight(30)),
                                     Text(
-                                      "Gmail",
+                                      "Google",
                                       style: TextStyle(
                                           fontFamily: 'RobotoFlex',
                                           color: R.colors.whiteColor),

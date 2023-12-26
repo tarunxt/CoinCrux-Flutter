@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "87632180660-7090jgke0k15skj99a3ad9s46sfa8rj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.astute.coincrux",
+            "certificate_hash": "ddef7770758e08d6569d292ae5c53537612adf57"
+          }
+        },
+        {
+          "client_id": "87632180660-jr53lchjpcvjfpufg8dvv174lajol117.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.astute.coincrux",
+            "certificate_hash": "530337eeb1a5e798d52cb053ca8a4669595ce859"
+          }
+        },
+        {
+          "client_id": "87632180660-m7vo4aavumlqkf7lg5ov9a1b6qs1d6q5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.astute.coincrux",
+            "certificate_hash": "e5d65410c119e44acbd0bf870bdfb9e1077f7b5d"
+          }
+        },
+        {
           "client_id": "87632180660-jb66142frp5ch2d8mi7qq7cm3lrusdse.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +53,13 @@
             {
               "client_id": "87632180660-jb66142frp5ch2d8mi7qq7cm3lrusdse.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "87632180660-7h4gpqtvhd5v979d7em0hg8qv8ulv03a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.astute.coincrux"
+              }
             }
           ]
         }
