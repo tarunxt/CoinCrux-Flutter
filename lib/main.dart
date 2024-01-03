@@ -1,5 +1,4 @@
-import "dart:io";
-// import 'package:coincrux/firebase_options.dart';
+import 'dart:io';
 import 'package:coincrux/resources/colors.dart';
 import 'package:coincrux/resources/resources.dart';
 import 'package:coincrux/routes/app_pages.dart';
@@ -15,7 +14,16 @@ import 'package:flutter/cupertino.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    // Handle Firebase initialization errors
+    print('Firebase initialization error: $e');
+    // Optionally, show an error message to the user
+    // and handle the situation gracefully
+  }
+
   runApp(
     MultiProvider(
       providers: [
@@ -30,6 +38,7 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
   static void setLocale(BuildContext context, Locale locale) {
     _MyAppState? state = context.findRootAncestorStateOfType<_MyAppState>();
     state?.setLocale(locale);
@@ -51,15 +60,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    () async {
-      await themeProvider.getTheme();
-    }();
 
-    if (themeProvider.themeMode == ThemeModeType.Dark) {
-      R.colors = AppColors(isDarkTheme: true);
-    } else {
-      R.colors = AppColors();
-    }
+    // Fetch theme asynchronously and set colors
+    () async {
+      try {
+        await themeProvider.getTheme();
+        setState(() {
+          R.colors = themeProvider.themeMode == ThemeModeType.Dark
+              ? AppColors(isDarkTheme: true)
+              : AppColors();
+        });
+      } catch (e) {
+        // Handle theme fetching errors
+        print('Theme fetching error: $e');
+      }
+    }();
 
     return Platform.isIOS
         ? CupertinoApp(
