@@ -482,7 +482,7 @@ class _NewsFeedViewState extends State<NewsFeedView> {
                                                                           getAssetImage(
                                                                             R.images.like,
                                                                             color: snapshot.data!.data()!["totalLikes"].contains(auth.currentUser!.uid)
-                                                                                ? Colors.red
+                                                                                ? Colors.blue
                                                                                 : R.colors.unSelectedIcon,
                                                                             height:
                                                                                 FetchPixels.getPixelHeight(20),

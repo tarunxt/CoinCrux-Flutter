@@ -1,15 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coincrux/base/resizer/fetch_pixels.dart';
-import 'package:coincrux/screens/auth/provider/auth_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 import '../model/news_model.dart';
 // import '../news_detail_page.dart';
 import '../widgets/news_feed_widget.dart';
-import 'graph_view.dart';
 
 class FeedView extends StatefulWidget {
   final NewsModel news;
