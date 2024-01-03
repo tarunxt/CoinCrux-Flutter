@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "87632180660-gebvv94c66v7r8megggs8644hjd8o7re.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.astute.coincrux",
+            "certificate_hash": "40e6ec4516a3ae82a6dfede9650921551ba71e57"
+          }
+        },
+        {
           "client_id": "87632180660-jr53lchjpcvjfpufg8dvv174lajol117.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
