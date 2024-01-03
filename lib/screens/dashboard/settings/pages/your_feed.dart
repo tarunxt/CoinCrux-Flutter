@@ -128,14 +128,14 @@ class _YourFeedState extends State<YourFeed> {
       ),
     );
   }
-
-  Widget coinsWidget(index, AuthProviderApp auth) {
+  Widget coinsWidget(int index, AuthProviderApp auth) {
+    String coinName = coinNames.elementAt(index);
     return Column(
       children: [
         Row(
           children: [
             Text(
-              coinNames[index],
+              coinName[index],
               style: R.textStyle.regularLato().copyWith(
                     fontSize: FetchPixels.getPixelHeight(17),
                   ),
@@ -146,52 +146,18 @@ class _YourFeedState extends State<YourFeed> {
                 children: List.generate(
                   3,
                   (i) {
+                    bool isSelected = auth.userM.topics!
+                        .where((t) => t.name == coinName && t.newsType == i)
+                        .isNotEmpty;
+
                     return InkWell(
                       onTap: () async {
-                        if (auth.userM.topics!
-                            .where((t) =>
-                                t.name == coinNames[index] && t.newsType == i)
-                            .toList()
-                            .isNotEmpty) {
-                          Topics topic =
-                              Topics(name: coinNames[index], newsType: i);
-                          auth.userM.topics!.remove(topic);
-                        } else {
-                          auth.userM.topics!.removeWhere((t) =>
-                              t.name == coinNames[index] && t.newsType != i);
-                          Topics topic =
-                              Topics(name: coinNames[index], newsType: i);
-                          auth.userM.topics!.add(topic);
-                        }
-
-                        setState(() {});
+                        _updateTopics(auth, coinName, i);
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: FetchPixels.getPixelWidth(18)),
-                        height: FetchPixels.getPixelHeight(30),
-                        width: FetchPixels.getPixelWidth(30),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(width: FetchPixels.getPixelWidth(1)),
-                            borderRadius: BorderRadius.circular(3),
-                            color: auth.userM.topics!
-                                    .where((t) =>
-                                        t.name == coinNames[index] &&
-                                        t.newsType == i)
-                                    .toList()
-                                    .isNotEmpty
-                                ? R.colors.theme
-                                : R.colors.transparent),
-                        child: Icon(Icons.check,
-                            color: auth.userM.topics!
-                                    .where((t) =>
-                                        t.name == coinNames[index] &&
-                                        t.newsType == i)
-                                    .toList()
-                                    .isNotEmpty
-                                ? Colors.white
-                                : R.colors.transparent),
+                        // ... existing code
+                        color: isSelected ? R.colors.theme : R.colors.transparent,
+                        
                       ),
                     );
                   },
@@ -200,9 +166,38 @@ class _YourFeedState extends State<YourFeed> {
             ),
           ],
         ),
-        getDivider(R.colors.fill.withOpacity(0.5),
-            FetchPixels.getPixelHeight(25), FetchPixels.getPixelHeight(1)),
+        
+        getDivider(
+          R.colors.fill.withOpacity(0.5),
+          FetchPixels.getPixelHeight(25),
+          FetchPixels.getPixelHeight(1),
+        ),
       ],
     );
   }
+
+  void _updateTopics(
+    AuthProviderApp auth,
+    String coinName,
+    int newsType,
+  ) {
+    bool exists = auth.userM.topics!
+        .where((t) => t.name == coinName && t.newsType == newsType)
+        .isNotEmpty;
+
+    if (exists) {
+      auth.userM.topics!.removeWhere(
+        (t) => t.name == coinName && t.newsType == newsType,
+      );
+    } else {
+      auth.userM.topics!
+          .removeWhere((t) => t.name == coinName && t.newsType != newsType);
+      Topics topic = Topics(name: coinName, newsType: newsType);
+      auth.userM.topics!.add(topic);
+    }
+
+      
+
 }
+}
+
