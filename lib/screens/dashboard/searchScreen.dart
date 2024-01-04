@@ -82,6 +82,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     query = v;
                                       
 
+                                      
+
                   });
                 },
               ),
@@ -101,6 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         .orderBy('createdAt', descending: true)
 
                       .get(),
+
 
                   builder: (context, snapshot) {
                    
