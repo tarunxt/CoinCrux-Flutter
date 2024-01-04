@@ -257,7 +257,7 @@ class AuthProviderApp extends ChangeNotifier {
     CategoryModel(
         coinLogo: R.images.other,
         bdColor: R.colors.bgContainer3,
-        coinName: "Other"),
+        coinName: "Others"),
     CategoryModel(
         coinLogo: R.images.mining,
         bdColor: R.colors.bgContainer,

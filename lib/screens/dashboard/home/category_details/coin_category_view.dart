@@ -23,6 +23,7 @@ class CoinCategoryView extends StatefulWidget {
 
 class _CoinCategoryViewState extends State<CoinCategoryView> {
   CardSwiperController cardSwiperController = CardSwiperController();
+  List<NewsModel> newsList = [];
   bool _isAppBarVisible = true;
   Timer? _appBarTimer;
   void _startTimer() {
@@ -47,19 +48,75 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
     }
   }
 
+
+ 
+
+
+            
+  Future fetchDetails() async {
+    // setState(() {
+    //   newsList = Provider.of<NewsProvider>(context, listen: false).newsList;
+    // });
+    await FirebaseFirestore.instance
+        .collection('News')
+        .where('category', isEqualTo: widget.coinName)
+        .get()
+        .then((value) {
+          // save data in newsList
+          value.docs.forEach((element) {
+            setState(() {
+              newsList.add(NewsModel.fromMap(element.data()));
+            });
+          });});
+}
+
   @override
   void initState() {
     print("${widget.coinName}");
+
     super.initState();
+    fetchDetails();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<NewsModel> newsList = Provider.of<NewsProvider>(context)
-        .newsList
-        .where((element) => element.assetName == widget.coinName)
-        .toList();
+    // List<NewsModel> newsList = Provider.of<NewsProvider>(context)
+    //     .newsList
+    //     .where((element) =>
+    //         (element.assetName == "None" ||
+    //                 element.assetName == "none" ||
+    //                 element.assetName == "NONE") &&
+    //             element.category == widget.coinName ||
+    //         element.category == widget.coinName ||
+    //         element.assetName == widget.coinName)
+    //     .toList();
+//  List<NewsModel> newsList = Provider.of<NewsProvider>(context).newsList;
+
+    // Fetch data from Firebase asynchronously
+    // FirebaseFirestore.instance.collection('News').wh().then((querySnapshot) {
+    //   querySnapshot.docs.forEach((doc) {
+    //     var firebaseCategory = doc['category'];
+    //     var firebaseAssetName = doc['assetName'];
+
+    //     // Filter newsList based on Firebase data
+    //     List<NewsModel> filteredNews = newsList.where((element) {
+    //     return (firebaseCategory == widget.coinName && widget.coinName == element.category) ||
+    //   (firebaseAssetName == widget.coinName && widget.coinName == element.assetName) ||
+    //   ((firebaseCategory == widget.coinName && element.category == widget.coinName) &&
+    //   (firebaseAssetName == widget.coinName && element.assetName == widget.coinName));
+
+    //     }).toList();
+
+    // Use filteredNews for further operations after Firebase data retrieval
+    // For example, you might assign it to a state variable or use it within your UI
+    //   });
+    // }).catchError((error) {
+    //   print("Error fetching data: $error");
+    // });
+
     final customImagesCount = (newsList.length / 5).floor;
+
+    // final customImagesCount = (newsList.length).floor;
     return Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: R.colors.bgColor,
@@ -96,6 +153,8 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
               child: PageView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: newsList.length > 5
+
+                      // itemCount: newsList.length > 1
                       ? newsList.length + customImagesCount()
                       : newsList.length,
                   itemBuilder: (ctx, index) {
@@ -116,6 +175,7 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
                                   height: FetchPixels.getPixelHeight(330),
                                   decoration: BoxDecoration(
                                       image: getDecorationNetworkImage(
+                                          // context, newsList[index].coinImage!,
                                           context,
                                           newsList[index - index ~/ 5]
                                               .coinImage!,
@@ -124,34 +184,13 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
                                 ),
                               ),
                               getVerSpace(FetchPixels.getPixelHeight(15)),
-                              // Padding(
-                              //   padding: const EdgeInsets.all(8),
-                              // child:Container(
-                              //   padding: EdgeInsets.symmetric(
-                              //       horizontal: FetchPixels.getPixelWidth(17),
-                              //       vertical: FetchPixels.getPixelHeight(6)),
-                              //   decoration: BoxDecoration(
-                              //       boxShadow: [
-                              //         BoxShadow(
-                              //             color: R.colors.fill.withOpacity(0.5),
-                              //             spreadRadius: 2,
-                              //             blurRadius: 2)
-                              //       ],
-                              //       color: R.colors.coinBoxColor,
-                              //       borderRadius: BorderRadius.circular(
-                              //           FetchPixels.getPixelHeight(5))),
-                              //   child: Text(
-                              //     newsList[index - index ~/ 5].assetName!,
-                              //     style: R.textStyle.regularLato().copyWith(
-                              //         fontSize: FetchPixels.getPixelHeight(13),
-                              //         color: R.colors.unSelectedIcon),
-                              //   ),
-                              // )),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
+                                  // newsList[index].coinHeading!,
                                   newsList[index - index ~/ 5].coinHeading!,
+
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                   style: R.textStyle.mediumLato().copyWith(
@@ -159,20 +198,12 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
                                       color: R.colors.blackColor),
                                 ),
                               ),
-                              //SizedBox(height: 5,),
-                              // Flexible(
-                              //   fit: FlexFit.loose,
-                              //   child:Padding(
-                              //     padding: EdgeInsets.symmetric(horizontal: 5),
-                              //     child:
-                              // Html(data: _newsList[index].articleDetails! ,style: {
-                              //   "p" : Style(fontSize: FontSize.larger, maxLines: 10),
-                              // },),)
-                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   newsList[index - index ~/ 5].coinDescription!,
+
+                                  // newsList[index].coinDescription!,
                                   textAlign: TextAlign.justify,
                                   maxLines: 12,
                                   overflow: TextOverflow.ellipsis,
@@ -184,13 +215,14 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
                                 ),
                               ),
                               getVerSpace(FetchPixels.getPixelHeight(15)),
-
                               Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     children: [
                                       Text(
                                         "Crux by ${newsList[index - index ~/ 5].createdBy}",
+
+                                        // "Crux by ${newsList[index].createdBy}",
                                         style: R.textStyle
                                             .regularLato()
                                             .copyWith(
@@ -211,6 +243,8 @@ class _CoinCategoryViewState extends State<CoinCategoryView> {
                                         width: FetchPixels.getPixelWidth(10),
                                       ),
                                       Text(
+                                        // timeago
+                                        //     .format(newsList[index].createdAt!),
                                         timeago.format(
                                             newsList[index - index ~/ 5]
                                                 .createdAt!),
