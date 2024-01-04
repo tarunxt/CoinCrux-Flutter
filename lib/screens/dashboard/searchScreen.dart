@@ -95,25 +95,15 @@ class _SearchScreenState extends State<SearchScreen> {
               child: FutureBuilder(
                   future: firebaseFirestore
                       .collection('News')
-                      .where('createdAt',
-                          isGreaterThan: Timestamp.fromDate(
-                              DateTime.now().subtract(Duration(days: 2))))
+                      // .where('createdAt',
+                      //     isGreaterThan: Timestamp.fromDate(
+                      //         DateTime.now().subtract(Duration(days: 2))))
+                        .orderBy('createdAt', descending: true)
+
                       .get(),
 
                   builder: (context, snapshot) {
-                    // var snapshots;
-                    // return(snapshots.connectionState == ConnectionState.waiting)
-                    //     ? Center(child: CircularProgressIndicator())
-                    //     : ListView.builder(
-                    //         itemCount: snapshots.data.docs.length,
-                    //         itemBuilder: (context, index) {
-                    //           DocumentSnapshot data = snapshots.data.docs[index];
-                    //           return ListTile(
-                    //             title: Text(data['title']),
-                    //             subtitle: Text(data['description']),
-                    //           );
-                    //         },
-                    //       );
+                   
                     
                     if (snapshot.hasData) {
                       List<NewsModel> news = snapshot.data!.docs

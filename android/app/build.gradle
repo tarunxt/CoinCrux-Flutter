@@ -64,7 +64,7 @@ android {
        release {
            keyAlias keystoreProperties['keyAlias']
            keyPassword keystoreProperties['keyPassword']
-           storeFile file ('E:/Github/cruxx.jks')
+           storeFile file ('E:/Github/cruxx.jks')//kindly add your location of the your .jks file.
            storePassword keystoreProperties['storePassword']
        }
    }
