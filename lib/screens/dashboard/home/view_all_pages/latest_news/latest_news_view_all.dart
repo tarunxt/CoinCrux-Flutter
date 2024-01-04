@@ -12,7 +12,7 @@ import '../../../../../base/resizer/fetch_pixels.dart';
 import '../../../../../base/widget_utils.dart';
 import '../../../../../resources/resources.dart';
 
-class LatestViewAll extends StatelessWidget {
+class LatestViewAll extends StatefulWidget {
   final NewsModel news;
   bool isNotification = false;
   int index;
@@ -24,23 +24,49 @@ class LatestViewAll extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    Future<String> loadImage(String? image) async {
-      if (image != null && image.isNotEmpty) {
-        Reference ref = FirebaseStorage.instance.ref().child(image);
-        String imageUrl = await ref.getDownloadURL();
-        return imageUrl;
-      }
-      return ""; // Return a default value if imagePath is empty
+  State<LatestViewAll> createState() => _LatestViewAllState();
+}
+
+class _LatestViewAllState extends State<LatestViewAll> {
+  String? imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    setImage();
+  }
+
+  Future<String> getImageUrl(String? imagePath, String? image) async {
+    if (imagePath != null) {
+      Reference ref = FirebaseStorage.instance.ref().child(imagePath);
+      String imageUrl = await ref.getDownloadURL();
+      return imageUrl;
+    } else if (image != null) {
+      Reference ref = FirebaseStorage.instance.ref().child(image);
+      String imageUrl = await ref.getDownloadURL();
+      return imageUrl;
     }
 
+    return "https://www.instron.com/-/media/images/instron/catalog/products/testing-systems/legacy/noimageavailable_instronsearch_white.png?sc_lang=en&hash=32CC6ED83B816AF812362C80B8367DC0";
+  }
+
+  Future<void> setImage() async {
+    String _image =
+        await getImageUrl(widget.news.coinImage, widget.news.coinImage);
+    setState(() {
+      imageUrl = _image;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         InkWell(
           onTap: () {
             Get.to(NewsDetailPage(
-              news: news,
-              index: index,
+              news: widget.news,
+              index: widget.index,
             ));
           },
           child: Row(
@@ -50,22 +76,32 @@ class LatestViewAll extends StatelessWidget {
                 child: Container(
                   height: FetchPixels.getPixelHeight(70),
                   width: FetchPixels.getPixelWidth(70),
-                  child: isNotification == false
-                      ? FutureBuilder(
-                          future: loadImage(news.coinImage!),
+                  child: !widget.isNotification
+                      ? FutureBuilder<String>(
+                          future: getImageUrl(
+                              widget.news.coinImage, widget.news.coinImage),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting)
+                              return Center(child: CircularProgressIndicator());
+                            if (snapshot.hasError)
                               return Center(
-                                child: Container(),
+                                child: Image.network(
+                                  widget.news.coinImage ??
+                                      '', // Provide a default value if imagePath is null
+                                  fit: BoxFit.cover,
+                                ),
                               );
+                            if (!snapshot.hasData || snapshot.data!.isEmpty)
+                              return Center(child: Text('Image not available'));
                             return Image.network(
-                              snapshot.data.toString(),
+                              snapshot.data!,
                               fit: BoxFit.cover,
                             );
-                          })
+                          },
+                        )
                       : Image.network(
-                          news.coinImage.toString(),
+                          widget.news.coinImage!,
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -91,7 +127,7 @@ class LatestViewAll extends StatelessWidget {
                               vertical: FetchPixels.getPixelHeight(3),
                             ),
                             child: Text(
-                              news.assetName!,
+                              widget.news.assetName!,
                               style: R.textStyle.regularLato().copyWith(
                                   fontSize: FetchPixels.getPixelHeight(10),
                                   color: R.colors.theme),
@@ -104,7 +140,7 @@ class LatestViewAll extends StatelessWidget {
                     Container(
                       width: FetchPixels.width - FetchPixels.getPixelWidth(110),
                       child: Text(
-                        news.coinHeading!,
+                        widget.news.coinHeading!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: R.textStyle.regularLato().copyWith(
@@ -112,12 +148,12 @@ class LatestViewAll extends StatelessWidget {
                             color: R.colors.blackColor),
                       ),
                     ),
-                    isNotification
+                    widget.isNotification
                         ? SizedBox(
                             height: FetchPixels.getPixelHeight(10),
                           )
                         : SizedBox(),
-                    isNotification
+                    widget.isNotification
                         ? Row(
                             children: [
                               getAssetImage(R.images.save,
@@ -151,7 +187,7 @@ class LatestViewAll extends StatelessWidget {
                               width: FetchPixels.getPixelWidth(5),
                             ),
                             Text(
-                              timeAgo.format(news.createdAt!),
+                              timeAgo.format(widget.news.createdAt!),
                               style: R.textStyle.regularLato().copyWith(
                                   fontSize: FetchPixels.getPixelHeight(10),
                                   color: Color(0xff909090)),
@@ -177,5 +213,11 @@ class LatestViewAll extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
   }
 }

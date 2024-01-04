@@ -53,28 +53,34 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getVerSpace(FetchPixels.getPixelHeight(50)),
+                      getVerSpace(FetchPixels.getPixelHeight(100)),
                       Align(
                         alignment: Alignment.center,
-                        child: getAssetImage(
-                          R.images.logo,
-                          height: FetchPixels.getPixelHeight(150),
-                          width: FetchPixels.getPixelWidth(200),
+                        child: Image.asset(
+                          'assets/images/splashicon.png',
+                          height: FetchPixels.getPixelHeight(100),
+                          width: FetchPixels.getPixelWidth(100),
                         ),
                       ),
-                      getVerSpace(FetchPixels.getPixelHeight(50)),
+                      getVerSpace(FetchPixels.getPixelHeight(150)),
                       Text(
                         "Enter your mobile number",
-                        style: R.textStyle.mediumLato().copyWith(
-                              fontSize: 18,
-                            ),
+                        style: TextStyle(
+                          fontFamily: 'RobotoFlex',
+                          fontSize: 18,
+                          // Other style properties if neededS
+                        ),
                       ),
                       getVerSpace(FetchPixels.getPixelHeight(10)),
                       Text(
                         "We will send you a confirmation code",
-                        style: R.textStyle
-                            .mediumLato()
-                            .copyWith(fontSize: 12, color: R.colors.blackColor),
+                        style: TextStyle(
+                          fontFamily:
+                              'Robotoflex', // Change to the desired font family ('Roboto' in this case)
+                          fontSize: 12,
+                          color: Colors.black, // Change the color as needed
+                          // Other style properties if needed
+                        ),
                       ),
                       getVerSpace(FetchPixels.getPixelHeight(30)),
                       InternationalPhoneNumberInput(
@@ -90,8 +96,9 @@ class _LoginViewState extends State<LoginView> {
                         ignoreBlank: false,
                         // validator: (value)=> FieldValidator.validatePhoneNumber(value!),
                         autoValidateMode: AutovalidateMode.onUserInteraction,
-                        selectorTextStyle:
-                            TextStyle(color: R.colors.whiteColor),
+                        selectorTextStyle: TextStyle(
+                            fontFamily: 'RobotoFlex',
+                            color: R.colors.whiteColor),
                         inputDecoration: R.decorations
                             .textFormFieldDecoration(null, "phone number"),
                         initialValue: number,
@@ -104,7 +111,7 @@ class _LoginViewState extends State<LoginView> {
                           print('On Saved: $number');
                         },
                         textStyle: TextStyle(
-                          color: R.colors.whiteColor,
+                          fontFamily: 'RobotoFlex',
                         ),
                       ),
                       getVerSpace(FetchPixels.getPixelHeight(50)),
@@ -133,9 +140,9 @@ class _LoginViewState extends State<LoginView> {
                           Center(
                             child: Text(
                               "Or",
-                              style: R.textStyle
-                                  .mediumLato()
-                                  .copyWith(fontSize: 13, color: R.colors.fill),
+                              style: TextStyle(
+                                  fontFamily: 'RobotoFlex',
+                                  color: R.colors.theme),
                             ),
                           ),
                           Container(
@@ -191,9 +198,10 @@ class _LoginViewState extends State<LoginView> {
                                     getAssetImage(R.images.mails,
                                         scale: FetchPixels.getPixelHeight(30)),
                                     Text(
-                                      "Gmail",
-                                      style:
-                                          TextStyle(color: R.colors.whiteColor),
+                                      "Google",
+                                      style: TextStyle(
+                                          fontFamily: 'RobotoFlex',
+                                          color: R.colors.whiteColor),
                                     )
                                   ]),
                             ),
@@ -216,8 +224,9 @@ class _LoginViewState extends State<LoginView> {
                                       scale: FetchPixels.getPixelHeight(26)),
                                   Text(
                                     "Facebook",
-                                    style:
-                                        TextStyle(color: R.colors.whiteColor),
+                                    style: TextStyle(
+                                        fontFamily: 'RobotoFlex',
+                                        color: R.colors.whiteColor),
                                   )
                                 ]),
                           ),
@@ -239,11 +248,11 @@ class _LoginViewState extends State<LoginView> {
                                                 FetchPixels.getPixelHeight(25)),
                                         Text(
                                           "Apple",
-                                          style: R.textStyle
-                                              .regularLato()
-                                              .copyWith(
-                                                  fontSize: 12,
-                                                  color: R.colors.blackColor),
+                                          style: TextStyle(
+                                            fontFamily: 'RobotoFlex',
+                                            fontSize: 18,
+                                            color: Colors.blue,
+                                          ),
                                         )
                                       ]),
                                 )

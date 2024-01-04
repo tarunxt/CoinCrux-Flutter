@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../base/resizer/fetch_pixels.dart';
 import '../../../../base/widget_utils.dart';
 import '../../../../resources/resources.dart';
+
 class TermsConditions extends StatelessWidget {
   const TermsConditions({Key? key}) : super(key: key);
 
@@ -12,28 +13,56 @@ class TermsConditions extends StatelessWidget {
       backgroundColor: R.colors.bgColor,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: R.colors.blackColor, //change your color here
+          color: R.colors.blackColor, // Change your color here
         ),
         elevation: 0.0,
         backgroundColor: R.colors.bgColor,
         centerTitle: true,
         title: Text(
           "Terms&Conditions",
-          style: R.textStyle
-              .mediumLato()
-              .copyWith(fontSize: FetchPixels.getPixelHeight(17)),
+          style: R.textStyle.mediumLato().copyWith(
+                fontSize: FetchPixels.getPixelHeight(17),
+              ),
         ),
       ),
-      body: getPaddingWidget(
-        EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
-        ListView(children: [
-          getVerSpace(FetchPixels.getPixelHeight(10)),
-          Text(R.dummyData.longerText,style: R.textStyle.regularLato(),),
-          getVerSpace(FetchPixels.getPixelHeight(10)),
-          Text(R.dummyData.shortText,style: R.textStyle.regularLato(),),Text(R.dummyData.longerText,style: R.textStyle.regularLato(),),
-          getVerSpace(FetchPixels.getPixelHeight(10)),
-          Text(R.dummyData.shortText,style: R.textStyle.regularLato(),),
-        ]),
+      body: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
+        child: Column(
+          children: [
+            Divider(
+              color: Colors.grey, // Set the color of the line
+              thickness: 1, // Set the thickness of the line
+              endIndent: 16, // Adjust the end indent if needed
+            ),
+            SizedBox(height: FetchPixels.getPixelHeight(10)),
+            Expanded(
+              child: ListView(
+                children: [
+                  getVerSpace(FetchPixels.getPixelHeight(10)),
+                  Text(
+                    R.dummyData.longerText,
+                    style: R.textStyle.regularLato(),
+                  ),
+                  getVerSpace(FetchPixels.getPixelHeight(10)),
+                  Text(
+                    R.dummyData.shortText,
+                    style: R.textStyle.regularLato(),
+                  ),
+                  Text(
+                    R.dummyData.longerText,
+                    style: R.textStyle.regularLato(),
+                  ),
+                  getVerSpace(FetchPixels.getPixelHeight(10)),
+                  Text(
+                    R.dummyData.shortText,
+                    style: R.textStyle.regularLato(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

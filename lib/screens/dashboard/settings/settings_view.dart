@@ -5,6 +5,8 @@ import 'package:coincrux/repository/signin_firebase.dart';
 import 'package:coincrux/routes/app_pages.dart';
 import 'package:coincrux/screens/auth/provider/auth_provider.dart';
 import 'package:coincrux/screens/dashboard/news_feed/news_feed_view.dart';
+import 'package:coincrux/screens/dashboard/news_feed/profile/profile_view.dart';
+import 'package:coincrux/screens/dashboard/profile.dart';
 import 'package:coincrux/screens/dashboard/settings/pages/about_us.dart';
 import 'package:coincrux/screens/dashboard/settings/pages/book_marks_view.dart';
 import 'package:coincrux/screens/dashboard/settings/pages/feedback_view.dart';
@@ -13,6 +15,7 @@ import 'package:coincrux/screens/dashboard/settings/pages/terms_condition.dart';
 import 'package:coincrux/screens/dashboard/settings/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -57,18 +60,18 @@ class _SettingsViewState extends State<SettingsView> {
             children: [
               index == 0
                   ? getAssetImage(R.images.terms,
-                      scale: 25, color: R.colors.blackColor)
+                      scale: 25, color: Colors.grey)
                   : index == 1
                       ? getAssetImage(R.images.privacy,
-                          scale: 25, color: R.colors.blackColor)
+                          scale: 25, color: Colors.grey)
                       : index == 2
                           ? getAssetImage(R.images.info,
-                              scale: 25, color: R.colors.blackColor)
+                              scale: 25, color: Colors.grey)
                           : index == 3
                               ? getAssetImage(R.images.share,
-                                  scale: 4, color: R.colors.blackColor)
+                                  scale: 4, color: Colors.grey)
                               : getAssetImage(R.images.star,
-                                  scale: 25, color: R.colors.blackColor),
+                                  scale: 25, color: Colors.grey),
               SizedBox(
                 width: FetchPixels.getPixelWidth(10),
               ),
@@ -76,6 +79,7 @@ class _SettingsViewState extends State<SettingsView> {
                 pagesNames[index],
                 style: R.textStyle.regularLato().copyWith(
                       fontSize: FetchPixels.getPixelHeight(18),
+                      color: Colors.grey,
                     ),
               ),
             ],
@@ -89,34 +93,49 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-        backgroundColor: R.colors.bgColor,
-        appBar: AppBar(
-          iconTheme: IconThemeData(
-            color: R.colors.blackColor, //change your color here
-          ),
-          elevation: 0.0,
-          backgroundColor: R.colors.bgColor,
-          centerTitle: true,
-          title: Text(
-            "Settings",
-            style: R.textStyle
-                .mediumLato()
-                .copyWith(fontSize: FetchPixels.getPixelHeight(17)),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                GoogleSignIn().signOut();
-                firebaseAuth.signOut();
-                Get.offAllNamed(Routes.loginView);
-              },
-              icon: Icon(
-                Icons.logout,
-                color: R.colors.blackColor,
-              ),
-            )
-          ],
+  backgroundColor: R.colors.bgColor,
+  appBar: AppBar(
+    iconTheme: IconThemeData(
+      color: R.colors.blackColor, // Change your color here
+    ),
+    elevation: 0.0,
+    backgroundColor: R.colors.bgColor,
+    centerTitle: true,
+    title: Text(
+      "Settings",
+      style: R.textStyle.mediumLato().copyWith(
+        fontSize: FetchPixels.getPixelHeight(17),
+      ),
+    ),
+    actions: [
+      IconButton(
+        onPressed: () {
+          GoogleSignIn().signOut();
+          firebaseAuth.signOut();
+          Get.offAllNamed(Routes.loginView);
+        },
+        icon: Icon(
+          Icons.logout,
+          color: R.colors.blackColor,
         ),
+      )
+    ],
+    bottom: PreferredSize(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.0),
+        height: 1.0,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.grey.withOpacity(0.4), // Set the color of the line with opacity
+              width: 1.0, // Set the width of the line
+            ),
+          ),
+        ),
+      ),
+      preferredSize: Size.fromHeight(1.0),
+    ),
+  ),
         body: Container(
           padding: EdgeInsets.all(15),
           child: Column(
@@ -179,15 +198,62 @@ class _SettingsViewState extends State<SettingsView> {
               SizedBox(
                 height: FetchPixels.getPixelHeight(60),
               ),
+             
+
+             
+             
+GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProfileView()),
+    );
+  },
+  child: Container(
+    alignment: Alignment.centerLeft,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Profile',
+          style: R.textStyle.mediumLato().copyWith(
+            fontSize: FetchPixels.getPixelHeight(18),
+          ),
+        ),
+        SizedBox(height: 5), // Adjust spacing as needed
+
+        // Divider widget for the separator line
+        Divider(
+          color: Colors.grey.withOpacity(0.4), // Set the color of the line
+          thickness: 1, // Set the thickness of the line
+          endIndent: 16, // Adjust the end indent if needed
+        ),
+      ],
+    ),
+  ),
+),
+              SizedBox(
+                height: FetchPixels.getPixelHeight(25),
+              ),
               Container(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'About CoinCrux',
-                  style: R.textStyle.mediumLato().copyWith(
-                        fontSize: FetchPixels.getPixelHeight(18),
-                      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'About CoinCrux',
+                      style: R.textStyle.mediumLato().copyWith(
+                            fontSize: FetchPixels.getPixelHeight(18),
+                          ),
+                    ),
+                    SizedBox(height: 5), // Adjust spacing as needed
+
+                    // Divider widget for the separator line
+          
+                  ],
                 ),
               ),
+              
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(

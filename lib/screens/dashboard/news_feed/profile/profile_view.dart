@@ -89,7 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                   color: R.colors.imageBgColor,
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(5)),
+                                                          Radius.circular(25)),
                                                 ),
                                               )
                                             : Container(
@@ -111,10 +111,18 @@ class _ProfileViewState extends State<ProfileView> {
                                                         fit: BoxFit.fill)),
                                               ),
                                       ),
-                                      Align(
-                                          alignment: Alignment.bottomRight,
+                                      
+                                      Material(
+                                          color: Colors.white,
+
+                                            // Replace 'alignment' with an existing named parameter or define a new named parameter
+
+
+
                                           child: InkWell(
+                                         
                                             onTap: () {
+
                                               ImagePickerDialog
                                                   .imagePickerDialog(
                                                       context: context,
@@ -156,7 +164,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   ));
                             },
                           ),
-                          SizedBox(height: FetchPixels.getPixelHeight(5)),
+                          SizedBox(height: FetchPixels.getPixelHeight(100)),
                           Text(
                             auth.userM.name ?? '',
                             style: R.textStyle.mediumLato().copyWith(

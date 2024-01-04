@@ -80,6 +80,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 onChanged: (v) {
                   setState(() {
                     query = v;
+                                      
+
                   });
                 },
               ),
@@ -97,7 +99,22 @@ class _SearchScreenState extends State<SearchScreen> {
                           isGreaterThan: Timestamp.fromDate(
                               DateTime.now().subtract(Duration(days: 2))))
                       .get(),
+
                   builder: (context, snapshot) {
+                    // var snapshots;
+                    // return(snapshots.connectionState == ConnectionState.waiting)
+                    //     ? Center(child: CircularProgressIndicator())
+                    //     : ListView.builder(
+                    //         itemCount: snapshots.data.docs.length,
+                    //         itemBuilder: (context, index) {
+                    //           DocumentSnapshot data = snapshots.data.docs[index];
+                    //           return ListTile(
+                    //             title: Text(data['title']),
+                    //             subtitle: Text(data['description']),
+                    //           );
+                    //         },
+                    //       );
+                    
                     if (snapshot.hasData) {
                       List<NewsModel> news = snapshot.data!.docs
                           .map((e) => NewsModel.fromJson(e.data()))
@@ -116,7 +133,10 @@ class _SearchScreenState extends State<SearchScreen> {
                           return LatestViewAll(
                               isNotification: false,
                               news: searchedNews[index],
-                              index: index);
+                              index: index,
+                              
+                              
+                              );
                         },
                       );
                     } else {

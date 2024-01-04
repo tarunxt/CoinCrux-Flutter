@@ -134,7 +134,7 @@ class _BookmarkState extends State<Bookmark> {
                                 .toList();
                             List<NewsModel> news = snapshot.data!.docs
                                 .map((e) => NewsModel.fromJson(
-                                    e.data() as Map<String, dynamic>))
+                                e.data() as Map<String, dynamic>))
                                 .toList();
 
                             List<NewsModel> bookMarkedNews = news;

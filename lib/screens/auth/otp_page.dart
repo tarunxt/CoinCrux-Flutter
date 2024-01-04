@@ -46,9 +46,11 @@ class _OTPViewState extends State<OTPView> {
                       getVerSpace(FetchPixels.getPixelHeight(50)),
                       Align(
                         alignment: Alignment.center,
-                        child: getAssetImage(R.images.logo,
-                            height: FetchPixels.getPixelHeight(150),
-                            width: FetchPixels.getPixelWidth(200)),
+                        child:Image.asset(
+                          'assets/images/splashicon.png',
+                          height: FetchPixels.getPixelHeight(100),
+                          width: FetchPixels.getPixelWidth(100),
+                        ),
                       ),
                       getVerSpace(FetchPixels.getPixelHeight(50)),
                       Text(
