@@ -51,16 +51,17 @@ class _HomeViewState extends State<HomeView> {
     startLoadingTimer();
     super.initState();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    Future<void> _refreshData() async {
+     Future<void> _refreshData() async {
       setState(() {
         isLoading = true;
       });
       startLoadingTimer();
       await Provider.of<NewsProvider>(context, listen: false).listenToNews();
     }
+
+  @override
+  Widget build(BuildContext context) {
+ 
 
     return Scaffold(
         backgroundColor: R.colors.bgColor,
