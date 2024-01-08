@@ -108,37 +108,49 @@ class _SearchScreenState extends State<SearchScreen> {
                   builder: (context, snapshot) {
                    
                     
-                    if (snapshot.hasData) {
-                      List<NewsModel> news = snapshot.data!.docs
-                          .map((e) => NewsModel.fromJson(e.data()))
-                          .toList();
+                    if (snapshot.connectionState == ConnectionState.done) {
+  if (snapshot.hasData) {
+    List<NewsModel> news = snapshot.data!.docs
+      .map((e) => NewsModel.fromJson(e.data()))
+      .toList();
 
-                      List<NewsModel> searchedNews = news.where((element) {
-                        String coinName = element.assetName!.toLowerCase();
-                        return coinName.contains(query.toLowerCase());
-                      }).toList();
+    List<NewsModel> searchedNews = news.where((element) {
+      String coinName = element.assetName!.toLowerCase();
+      return coinName.contains(query.toLowerCase());
+    }).toList();
 
-                      return ListView.builder(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: FetchPixels.getPixelWidth(20)),
-                        itemCount: searchedNews.length,
-                        itemBuilder: (context, index) {
-                          return LatestViewAll(
-                              isNotification: false,
-                              news: searchedNews[index],
-                              index: index,
-                              
-                              
-                              );
-                        },
-                      );
-                    } else {
-                      return Center(
-                        child: SingleChildScrollView(
-                          child: Center(child: Text("No Results Found")),
-                        ),
-                      );
-                    }
+    if (searchedNews.isEmpty) {
+      return Center(
+        child: SingleChildScrollView(
+          child: Text("No Results Found"),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: FetchPixels.getPixelWidth(20)),
+        itemCount: searchedNews.length,
+        itemBuilder: (context, index) {
+          return LatestViewAll(
+            isNotification: false,
+            news: searchedNews[index],
+            index: index,
+          );
+        },
+      );
+    }
+  } else {
+    return Center(
+      child: SingleChildScrollView(
+        child: Text("No data available"),
+      ),
+    );
+  }
+} else {
+  return Center(
+    child: CircularProgressIndicator(),
+  );
+}
+
                   }),
             )
           ],
