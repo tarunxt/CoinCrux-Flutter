@@ -3,7 +3,6 @@ import 'package:coincrux/screens/auth/provider/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +10,6 @@ import '../../base/resizer/fetch_pixels.dart';
 import '../../base/widget_utils.dart';
 import '../../repository/signin_firebase.dart';
 import '../../resources/resources.dart';
-import '../../routes/app_routes.dart';
 import '../../widgets/my_button.dart';
 import '../dashboard/dashboard_view.dart';
 import 'dialog/name_dialog.dart';
