@@ -23,21 +23,21 @@ class _YourFeedState extends State<YourFeed> {
 
   List<String> coinNames = [
     "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
+    "Ethereum",
+    "Analytics",
+    "Exchange",
     "Altcoins",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
-    "Bitcoin",
+    "Markets",
+    "Metaverse",
+    "Blockchain",
+    "GameFi",
+    "Finance",
+    "Others",
+    "Mining",
+    "Security",
+    "Economy",
+    "Banking",
+    "World",
   ];
 
   List<int> ind = [];
@@ -74,7 +74,7 @@ class _YourFeedState extends State<YourFeed> {
       backgroundColor: R.colors.bgColor,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: R.colors.blackColor, //change your color here
+          color: R.colors.blackColor, 
         ),
         elevation: 0.0,
         backgroundColor: R.colors.bgColor,
@@ -135,7 +135,7 @@ class _YourFeedState extends State<YourFeed> {
         Row(
           children: [
             Text(
-              coinName[index],
+              coinName,
               style: R.textStyle.regularLato().copyWith(
                     fontSize: FetchPixels.getPixelHeight(17),
                   ),
@@ -146,9 +146,10 @@ class _YourFeedState extends State<YourFeed> {
                 children: List.generate(
                   3,
                   (i) {
-                    bool isSelected = auth.userM.topics!
-                        .where((t) => t.name == coinName && t.newsType == i)
-                        .isNotEmpty;
+                 bool isSelected = auth.userM.topics != null &&
+    auth.userM.topics!
+        .where((t) => t.name == coinName && t.newsType == i)
+        .isNotEmpty;
 
                     return InkWell(
                       onTap: () async {

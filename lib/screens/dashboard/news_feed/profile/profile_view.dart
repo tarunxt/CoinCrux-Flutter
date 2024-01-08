@@ -3,6 +3,7 @@ import 'package:coincrux/base/resizer/fetch_pixels.dart';
 import 'package:coincrux/base/widget_utils.dart';
 import 'package:coincrux/dialog/imagePicker.dart';
 import 'package:coincrux/routes/app_routes.dart';
+import 'package:coincrux/screens/auth/personalise_feed/personlise_feed.dart';
 import 'package:coincrux/screens/auth/provider/auth_provider.dart';
 import 'package:coincrux/screens/dashboard/news_feed/profile/likedPosts.dart';
 import 'package:coincrux/screens/dashboard/settings/pages/your_feed.dart';
@@ -10,15 +11,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../../../../resources/resources.dart';
 
 class ProfileView extends StatefulWidget {
   ProfileView({Key? key}) : super(key: key);
+  
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
+  
 }
 
 class _ProfileViewState extends State<ProfileView> {
@@ -28,23 +30,18 @@ class _ProfileViewState extends State<ProfileView> {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   List<String> pagesNames = [
+    "Name/Email",
     "Bookmarks",
     "Liked Posts",
     "Personalise your feed",
-    "Delete Account",
+    // "Delete Account",
   ];
 
-  List<String> images = [
-    R.images.profileIcon,
-    R.images.mail,
-    R.images.phone,
-    // R.images.lock,
-    R.images.delete,
-    R.images.logout,
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+    
     return Consumer<AuthProviderApp>(
       builder: (context, auth, child) {
         return Align(
@@ -56,8 +53,9 @@ class _ProfileViewState extends State<ProfileView> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   FetchPixels.getPixelHeight(5),
+                  
                 ),
-                color: R.colors.whiteColor),
+                color: R.colors.bgColor),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,8 +68,8 @@ class _ProfileViewState extends State<ProfileView> {
                           Consumer<AuthProviderApp>(
                             builder: (context, auth, child) {
                               return Container(
-                                  height: FetchPixels.getPixelHeight(125),
-                                  width: FetchPixels.getPixelWidth(125),
+                                  height: FetchPixels.getPixelHeight(120),
+                                  width: FetchPixels.getPixelWidth(120),
                                   child: Stack(
                                     children: [
                                       Align(
@@ -81,15 +79,19 @@ class _ProfileViewState extends State<ProfileView> {
                                             ? Container(
                                                 height:
                                                     FetchPixels.getPixelHeight(
-                                                        100),
+                                                        125),
                                                 width:
                                                     FetchPixels.getPixelWidth(
-                                                        100),
+                                                        125),
                                                 decoration: BoxDecoration(
-                                                  color: R.colors.imageBgColor,
-                                                  borderRadius:
+                                                  color: R.colors.isDarkTheme?
+                                                  R.colors.whiteColor.withOpacity(0.1):
+                                                  R.colors.blackColor.withOpacity(0.1),
+
+                                                  
+                                                      borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(25)),
+                                                          Radius.circular(20)),
                                                 ),
                                               )
                                             : Container(
@@ -113,9 +115,8 @@ class _ProfileViewState extends State<ProfileView> {
                                       ),
                                       
                                       Material(
-                                          color: Colors.white,
+                                          color: Colors.transparent,
 
-                                            // Replace 'alignment' with an existing named parameter or define a new named parameter
 
 
 
@@ -153,18 +154,19 @@ class _ProfileViewState extends State<ProfileView> {
                                             child: Container(
                                                 padding: EdgeInsets.all(3),
                                                 decoration: BoxDecoration(
-                                                    color: Colors.white,
+                                                    color: R.colors.whiteColor
+                                                        .withOpacity(0.1),
                                                     shape: BoxShape.circle),
                                                 child: Icon(
-                                                  Icons.edit,
-                                                  color: Colors.black,
+                                                  Icons.change_circle,
+                                                  color: R.colors.whiteColor,
                                                 )),
                                           ))
                                     ],
                                   ));
                             },
                           ),
-                          SizedBox(height: FetchPixels.getPixelHeight(100)),
+                          SizedBox(height: FetchPixels.getPixelHeight(75)),
                           Text(
                             auth.userM.name ?? '',
                             style: R.textStyle.mediumLato().copyWith(
@@ -181,7 +183,9 @@ class _ProfileViewState extends State<ProfileView> {
                         ],
                       )),
                   SizedBox(height: FetchPixels.getPixelHeight(40)),
+
                   Expanded(
+                    
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(
                         vertical: FetchPixels.getPixelHeight(10),
@@ -198,109 +202,83 @@ class _ProfileViewState extends State<ProfileView> {
                 ]),
           ),
         );
-        //     : FutureBuilder(
-        //   future: firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).get(),
-        //     builder: (context,snapshot){
-        //       if(snapshot.hasData){
-        //         Map<String,dynamic> data = snapshot.data!.data() as Map<String,dynamic>;
-        //         UserModel userModel = UserModel.fromJson(data);
-        //         return ListView.builder(
-        //           padding: EdgeInsets.symmetric(
-        //               vertical: FetchPixels.getPixelHeight(30)),
-        //           itemCount: images.length,
-        //           itemBuilder: (context, index) {
-        //             return pagesName(index);
-        //           },
-        //         );
-        //       }else{
-        //         return Center(child: SingleChildScrollView(),);
-        //       }
-        // });
+      
       },
     );
   }
 
-  Widget pagesName(index) {
-    return GestureDetector(
+Widget pagesName(int index) {
+  // Define the pagesNames and images excluding the delete option
+  List<String> images = [R.images.profile,R.images.save, R.images.like,R.images.feed];
+
+ return GestureDetector(
       onTap: () {
-        if (index == 0) {
+         
+         if (index ==1 ) {
           Get.toNamed(Routes.bookmark);
-        } else if (index == 1) {
-          Get.to(() => LikedPosts());
-        } else if (index == 2) {
-          Get.to(YourFeed());
-        } else {
-          deleteAccount();
         }
+         else if (index == 2) {
+          Get.to(() => LikedPosts());
+        }
+        
+       
+        else if(index==3){
+          Get.to(() => PersonaliseFeed());
+          //or feed
+        }
+        
       },
-      child: Column(
+      // for name/email well use the same widget as the delete account like shown below
+
+
+
+
+    child: Container(
+  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+  padding: EdgeInsets.all(16.0),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8.0),
+    color: Colors.white,
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.3),
+        spreadRadius: 2,
+        blurRadius: 6,
+        offset: Offset(0, 4),
+      ),
+    ],
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+         Color(0xFF3A7BD5).withOpacity(0.8), 
+        Color(0xFF3A7BD5).withOpacity(0.5), 
+        Color(0xFF2196F3).withOpacity(0.3)
+      ],
+    ),
+  ),
+
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                width: FetchPixels.getPixelWidth(20),
-                height: FetchPixels.getPixelHeight(20),
-                child: index == 0
-                    ? getAssetImage(R.images.save, scale: 25)
-                    : index == 1
-                        ? getAssetImage(R.images.save, scale: 25)
-                        : index == 2
-                            ? getAssetImage(R.images.feed, scale: 25)
-                            : getAssetImage(R.images.delete, scale: 4),
-              ),
-              SizedBox(
-                width: FetchPixels.getPixelWidth(10),
-              ),
-              Text(
-                pagesNames[index],
-                style: R.textStyle.regularLato().copyWith(
-                      fontSize: FetchPixels.getPixelHeight(16),
-                    ),
-              ),
-            ],
+          Container(
+
+            width: FetchPixels.getPixelWidth(35),
+            height: FetchPixels.getPixelHeight(30),
+            child: getAssetImage(images[index], scale:30 ),
+          ),
+          SizedBox(width: FetchPixels.getPixelWidth(10)),
+          Text(
+            pagesNames[index],
+
+            style: R.textStyle.regularLato().copyWith(
+              fontSize: FetchPixels.getPixelHeight(16),
+              color:Color.fromARGB(255, 120, 120, 120),
+            ),
           ),
         ],
       ),
-    );
-  }
-
-  void deleteAccount() async {
-    AuthProviderApp auth = Provider.of(context, listen: false);
-    if (firebaseAuth.currentUser != null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Center(
-                child: CircularProgressIndicator(
-              color: R.colors.theme,
-            ));
-          });
-      GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
-      GoogleSignInAuthentication googleAuth =
-          await googleSignInAccount!.authentication;
-      AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      try {
-        await firebaseAuth.currentUser
-            ?.reauthenticateWithCredential(credential);
-        firebaseFirestore
-            .collection("users")
-            .doc(firebaseAuth.currentUser!.uid)
-            .delete()
-            .then((value) {
-          firebaseAuth.currentUser!.delete().then((value) {
-            auth.userSubscription!.cancel();
-            auth.dashCurrentPage = 2;
-            auth.update();
-            Navigator.pop(context);
-          });
-        });
-      } catch (e) {
-        print('Error reauthenticating user: $e');
-      }
-    }
-  }
+    ),
+  );
 }
+}
+

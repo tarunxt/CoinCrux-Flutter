@@ -211,6 +211,26 @@ class AuthProviderApp extends ChangeNotifier {
       "topicTitle": newsList.topicTitle,
       "marketCards": newsList.marketsCard,
     });
+
+    var likeRef = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("Likes")
+        .doc(documentId)
+        .set({
+      "coinImage": newsList.coinImage,
+      "coinDescription": newsList.coinDescription,
+      "coinHeading": newsList.coinHeading,
+      "assetName": newsList.assetName,
+      "newsId": newsList.newsId,
+      "totalLikes": newsList.totalLikes,
+      "totalDislikes": newsList.totalDislikes,
+      "createdAt": newsList.createdAt,
+      "category": newsList.category,
+      "createdBy": newsList.createdBy,
+      "topicTitle": newsList.topicTitle,
+      "marketCards": newsList.marketsCard,
+    });
   }
 
   List<CategoryModel> categoriesList = [

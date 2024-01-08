@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coincrux/screens/dashboard/news_feed/profile/profile_view.dart';
 import 'package:coincrux/screens/dashboard/news_feed/provider/news_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -57,6 +58,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 HomeView(),
                 NewsFeedView(),
                 SettingsView(),
+                ProfileView()
               ],
             ),
           ),
@@ -64,24 +66,35 @@ class _DashBoardPageState extends State<DashBoardPage> {
         bottomNavigationBar: CurvedNavigationBar(
           color: R.colors.bgColor,
           backgroundColor: R.colors.theme,
+          
+
           index: currentPage,
           items: [
             Icon(
               Icons.home,
               color: R.colors.navButtonColor,
-              size: FetchPixels.getPixelHeight(25),
+              size: FetchPixels.getPixelHeight(28),
+              
             ),
             Icon(
               Icons.newspaper,
+            
+
               color: R.colors.navButtonColor,
-              size: FetchPixels.getPixelHeight(25),
+              size: FetchPixels.getPixelHeight(28),
             ),
             Icon(
               Icons.settings,
               color: R.colors.navButtonColor,
-              size: FetchPixels.getPixelHeight(25),
+              size: FetchPixels.getPixelHeight(28),
+            ),
+            Icon(
+              Icons.person,
+              color: R.colors.navButtonColor,
+              size: FetchPixels.getPixelHeight(28),
             ),
           ],
+
           onTap: (index) {
             setState(() {
               currentPage = index;
