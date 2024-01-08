@@ -11,7 +11,7 @@ import '../../../resources/resources.dart';
 class NewsDetailPage extends StatefulWidget {
   final NewsModel news;
   int? index;
-  NewsDetailPage({Key? key, required this.news, this.index}) : super(key: key);
+  NewsDetailPage({Key? key, required this.news, this.index, String? newsname}) : super(key: key);
 
   @override
   State<NewsDetailPage> createState() => _NewsDetailPageState();

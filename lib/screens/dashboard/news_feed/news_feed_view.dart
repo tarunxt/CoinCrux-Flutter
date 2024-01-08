@@ -5,15 +5,15 @@ import 'package:coincrux/base/widget_utils.dart';
 import 'package:coincrux/screens/auth/provider/auth_provider.dart';
 import 'package:coincrux/screens/dashboard/news_feed/comments_view.dart';
 import 'package:coincrux/screens/dashboard/news_feed/model/news_model.dart';
-import 'package:coincrux/screens/dashboard/news_feed/pages/feed_view.dart';
+// import 'package:coincrux/screens/dashboard/news_feed/pages/feed_view.dart';
 import 'package:coincrux/screens/dashboard/news_feed/widgets/full_screen_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+// import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:coincrux/screens/dashboard/news_feed/provider/news_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+// import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:provider/provider.dart';
 import '../../../resources/resources.dart';
 
@@ -23,16 +23,18 @@ class NewsFeedView extends StatefulWidget {
     super.key,
     this.index,
   });
+  
+
 
   @override
   State<NewsFeedView> createState() => _NewsFeedViewState();
+  
 }
 
 class _NewsFeedViewState extends State<NewsFeedView> {
   int currentType = 0;
   var isLoading = true;
 
-  Timer? _appBarTimer;
   bool _isAppBarVisible = true;
 
   @override
@@ -49,13 +51,14 @@ class _NewsFeedViewState extends State<NewsFeedView> {
 
   void startLoadingTimer() {
     const loadingDuration =
-        Duration(seconds: 8); // Adjust the duration as needed
+        Duration(seconds:3 ); // Adjust the duration as needed
 
     Timer(loadingDuration, () {
       setState(() {
         isLoading = false;
       });
     });
+    
   }
 
   Widget newsType(index) {
@@ -147,9 +150,10 @@ class _NewsFeedViewState extends State<NewsFeedView> {
                             itemCount: newsList.length > 5
                                 ? newsList.length + customImagesCount()
                                 : newsList.length,
+                                
                             itemBuilder: (ctx, index) {
                               if (newsList.isNotEmpty) {
-                                var ref = firestore
+                                 firestore
                                     .collection("News")
                                     .doc(refId[index - index ~/ 5])
                                     .set({
@@ -261,6 +265,7 @@ class _NewsFeedViewState extends State<NewsFeedView> {
                                                               color: R.colors
                                                                   .unSelectedIcon),
                                                     ),
+
                                                     SizedBox(
                                                       width: FetchPixels
                                                           .getPixelWidth(10),
