@@ -51,7 +51,7 @@ class _NewsFeedViewState extends State<NewsFeedView> {
 
   void startLoadingTimer() {
     const loadingDuration =
-        Duration(seconds:3 ); // Adjust the duration as needed
+        Duration(seconds:0 ); // Adjust the duration as needed
 
     Timer(loadingDuration, () {
       setState(() {
