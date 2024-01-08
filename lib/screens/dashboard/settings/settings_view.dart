@@ -202,40 +202,13 @@ class _SettingsViewState extends State<SettingsView> {
 
              
              
-GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProfileView()),
-    );
-  },
-  child: Container(
-    alignment: Alignment.centerLeft,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Profile',
-          style: R.textStyle.mediumLato().copyWith(
-            fontSize: FetchPixels.getPixelHeight(18),
-          ),
-        ),
-        SizedBox(height: 5), // Adjust spacing as needed
 
-        // Divider widget for the separator line
-        Divider(
-          color: Colors.grey.withOpacity(0.4), // Set the color of the line
-          thickness: 1, // Set the thickness of the line
-          endIndent: 16, // Adjust the end indent if needed
-        ),
-      ],
-    ),
-  ),
-),
+
+    
               SizedBox(
                 height: FetchPixels.getPixelHeight(25),
               ),
-              Container(
+        Container(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,6 +225,7 @@ GestureDetector(
           
                   ],
                 ),
+
               ),
               
               Expanded(
@@ -268,8 +242,17 @@ GestureDetector(
                   },
                 ),
               ),
+
+              SizedBox(
+                height: FetchPixels.getPixelHeight(25),
+              ),
+
+
             ],
           ),
-        ));
+        ),
+        );
+
+
   }
 }
